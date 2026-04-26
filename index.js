@@ -1,3 +1,4 @@
+const authentication = require('./authentication');
 const projectCreatedTrigger = require('./triggers/project_created.js');
 const companyCreatedTrigger = require('./triggers/company_created.js');
 const contactCreatedTrigger = require('./triggers/contact_created.js');
@@ -10,7 +11,9 @@ const findContactSearch = require('./searches/find_contact.js');
 module.exports = {
   version: require('./package.json').version,
   platformVersion: require('zapier-platform-core').version,
-  requestTemplate: {},
+  requestTemplate: {
+    headers: { Authorization: 'Bearer {{bundle.authData.access_token}}' },
+  },
   triggers: {
     [projectCreatedTrigger.key]: projectCreatedTrigger,
     [companyCreatedTrigger.key]: companyCreatedTrigger,
@@ -45,4 +48,5 @@ module.exports = {
       search: 'find_contact',
     },
   },
+  authentication: authentication,
 };

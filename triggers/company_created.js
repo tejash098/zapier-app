@@ -3,7 +3,7 @@ module.exports = {
   display: {
     description: 'Triggers when a new company is created.',
     hidden: false,
-    label: 'Company Created',
+    label: 'New Company Created',
   },
   key: 'company_created',
   noun: 'Company',

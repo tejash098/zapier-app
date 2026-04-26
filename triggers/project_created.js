@@ -3,7 +3,7 @@ module.exports = {
   display: {
     description: 'Triggers when a new project is created.',
     hidden: false,
-    label: 'Project Created',
+    label: 'New Project Created',
   },
   key: 'project_created',
   noun: 'Project',
