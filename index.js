@@ -6,10 +6,11 @@ const companyUpdatedTrigger = require('./triggers/company_updated.js');
 const contactUpdatedTrigger = require('./triggers/contact_updated.js');
 const dealCreatedTrigger = require('./triggers/deal_created.js');
 const projectUpdatedTrigger = require('./triggers/project_updated.js');
-const dealStageUpdatedTrigger = require('./triggers/deal_stage_updated.js');
+const dealUpdatedTrigger = require('./triggers/deal_updated.js');
 const createCompanyCreate = require('./creates/create_company.js');
 const createContactCreate = require('./creates/create_contact.js');
 const createDealCreate = require('./creates/create_deal.js');
+const createProjectCreate = require('./creates/create_project.js');
 const findProjectSearch = require('./searches/find_project.js');
 const findCompanySearch = require('./searches/find_company.js');
 const findContactSearch = require('./searches/find_contact.js');
@@ -29,7 +30,7 @@ module.exports = {
     [contactUpdatedTrigger.key]: contactUpdatedTrigger,
     [dealCreatedTrigger.key]: dealCreatedTrigger,
     [projectUpdatedTrigger.key]: projectUpdatedTrigger,
-    [dealStageUpdatedTrigger.key]: dealStageUpdatedTrigger,
+    [dealUpdatedTrigger.key]: dealUpdatedTrigger,
   },
   searches: {
     [findProjectSearch.key]: findProjectSearch,
@@ -41,6 +42,7 @@ module.exports = {
     [createCompanyCreate.key]: createCompanyCreate,
     [createContactCreate.key]: createContactCreate,
     [createDealCreate.key]: createDealCreate,
+    [createProjectCreate.key]: createProjectCreate,
   },
   searchOrCreates: {
     find_company: {
@@ -69,6 +71,15 @@ module.exports = {
       },
       key: 'find_deal',
       search: 'find_deal',
+    },
+    find_project: {
+      create: 'create_project',
+      display: {
+        description: 'Finds a Project by Name',
+        label: 'Find or Create Project',
+      },
+      key: 'find_project',
+      search: 'find_project',
     },
   },
   authentication: authentication,
