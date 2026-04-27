@@ -1,5 +1,10 @@
 module.exports = {
-  operation: { perform: {} },
+  operation: {
+    perform: {
+      headers: { Accept: 'application/json' },
+      url: '{{process.env.BASE_URL}}/api/project/info/',
+    },
+  },
   display: {
     description: 'Triggers when a new project is created.',
     hidden: false,
