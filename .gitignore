@@ -66,3 +66,4 @@ typings/
 .pnpm-store/
 .vscode/
 .zapierapprc
+*.lock
