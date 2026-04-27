@@ -1,10 +1,10 @@
 module.exports = {
   operation: { perform: {} },
   display: {
-    description: 'Triggers when a existing contact updated.',
+    description: "Triggers when a existing contact updated.",
     hidden: false,
-    label: 'Existing Contact Updated',
+    label: "Existing Contact Updated",
   },
-  key: 'contact_updated',
-  noun: 'Contact',
+  key: "contact_updated",
+  noun: "Contact",
 };

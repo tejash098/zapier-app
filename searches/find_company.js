@@ -2,18 +2,18 @@ module.exports = {
   operation: {
     perform: {
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
       removeMissingValuesFrom: { body: false, params: false },
-      url: '{{process.env.BASE_URL}}/api/company/',
+      url: "{{process.env.BASE_URL}}/api/company/",
     },
   },
   display: {
-    description: 'Finds a Company by Name',
+    description: "Finds a Company by Name",
     hidden: false,
-    label: 'Find Company',
+    label: "Find Company",
   },
-  key: 'find_company',
-  noun: 'Company',
+  key: "find_company",
+  noun: "Company",
 };

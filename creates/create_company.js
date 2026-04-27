@@ -1,20 +1,20 @@
 module.exports = {
   operation: {
     perform: {
-      body: { company_name: '' },
+      body: { company_name: "" },
       headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
+        "Content-Type": "application/json",
+        Accept: "application/json",
       },
-      method: 'POST',
-      url: '{{process.env.BASE_URL}}/api/company',
+      method: "POST",
+      url: "{{process.env.BASE_URL}}/api/company",
     },
   },
   display: {
-    description: 'Creates a Company in Projetly.',
+    description: "Creates a Company in Projetly.",
     hidden: false,
-    label: 'Create Company',
+    label: "Create Company",
   },
-  key: 'create_company',
-  noun: 'Company',
+  key: "create_company",
+  noun: "Company",
 };
