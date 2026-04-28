@@ -1,17 +1,17 @@
-const zapier = require("zapier-platform-core");
+const zapier = require('zapier-platform-core');
 
 // Use this to make test calls into your app:
-const App = require("../../index");
+const App = require('../../index');
 const appTester = zapier.createAppTester(App);
 // read the `.env` file into the environment, if available
 zapier.tools.env.inject();
 
-describe("triggers.project_created", () => {
-  it("should run", async () => {
+describe('triggers.project_created', () => {
+  it('should run', async () => {
     const bundle = { inputData: {} };
 
     const results = await appTester(
-      App.triggers["project_created"].operation.perform,
+      App.triggers['project_created'].operation.perform,
       bundle,
     );
     expect(results).toBeDefined();

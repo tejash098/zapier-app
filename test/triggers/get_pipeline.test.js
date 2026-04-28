@@ -6,12 +6,12 @@ const appTester = zapier.createAppTester(App);
 // read the `.env` file into the environment, if available
 zapier.tools.env.inject();
 
-describe('searches.find_project', () => {
+describe('triggers.get_pipeline', () => {
   it('should run', async () => {
     const bundle = { inputData: {} };
 
     const results = await appTester(
-      App.searches['find_project'].operation.perform,
+      App.triggers['get_pipeline'].operation.perform,
       bundle,
     );
     expect(results).toBeDefined();

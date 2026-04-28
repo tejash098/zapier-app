@@ -1,10 +1,10 @@
 module.exports = {
   operation: { perform: {} },
   display: {
-    description: "Creates a Project in Projetly.",
+    description: 'Creates a Project in Projetly.',
     hidden: false,
-    label: "Create Project",
+    label: 'Create Project',
   },
-  key: "create_project",
-  noun: "Project",
+  key: 'create_project',
+  noun: 'Project',
 };
