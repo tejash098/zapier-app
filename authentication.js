@@ -42,4 +42,5 @@ module.exports = {
     autoRefresh: true,
   },
   fields: [],
+  connectionLabel: '{{bundle.authData.name}} ({{bundle.authData.email}})',
 };

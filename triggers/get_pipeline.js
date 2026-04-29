@@ -47,9 +47,9 @@ module.exports = {
     ],
   },
   display: {
-    description: 'Triggers when users select from Dropdown',
+    description: 'Triggers when users select Specific Pipeline from Dropdown',
     hidden: true,
-    label: 'Get Pipeline',
+    label: 'Get Deal Pipeline',
   },
   key: 'get_pipeline',
   noun: 'Pipeline',

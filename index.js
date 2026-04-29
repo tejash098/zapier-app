@@ -8,6 +8,7 @@ const dealCreatedTrigger = require('./triggers/deal_created.js');
 const projectUpdatedTrigger = require('./triggers/project_updated.js');
 const dealUpdatedTrigger = require('./triggers/deal_updated.js');
 const getPipelineTrigger = require('./triggers/get_pipeline.js');
+const getPipelineStagesTrigger = require('./triggers/get_pipeline_stages.js');
 const createCompanyCreate = require('./creates/create_company.js');
 const createContactCreate = require('./creates/create_contact.js');
 const createDealCreate = require('./creates/create_deal.js');
@@ -33,6 +34,7 @@ module.exports = {
     [projectUpdatedTrigger.key]: projectUpdatedTrigger,
     [dealUpdatedTrigger.key]: dealUpdatedTrigger,
     [getPipelineTrigger.key]: getPipelineTrigger,
+    [getPipelineStagesTrigger.key]: getPipelineStagesTrigger,
   },
   searches: {
     [findProjectSearch.key]: findProjectSearch,
