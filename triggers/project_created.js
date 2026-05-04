@@ -7,8 +7,8 @@ const perform = async (z, bundle) => {
     },
     params: {},
     removeMissingValuesFrom: {
-      body: false,
-      params: false,
+      body: true,
+      params: true,
     },
   };
 
@@ -39,19 +39,15 @@ module.exports = {
         'Projetly is an AI-powered platform to streamline onboarding, manage projects, automate workflows, and collaborate with customers in digital sales rooms.',
       start_date: '2026-03-25T04:29:32.165000Z',
       due_date: '2026-06-02T00:00:00Z',
-      project_manager: {},
       is_arr: false,
       revenue: '$ 0',
       show_forecasted_date: false,
-      forecasted_date: null,
-      project_fee: null,
+      forecasted_date: '2026-06-02T00:00:00Z',
+      project_fee: 313555,
       project_owner: {
-        user_id: '7424683538143776769',
-        full_name: 'Samaresh',
-        profile_image: '',
+        full_name: 'Admin Projetly',
         email: 'sales@projetly.io',
         role: 'Organization Admin',
-        phone_number: '+ 1 628 6005116',
         is_customer: false,
       },
       account_name: 'Projetly Marketplace',
@@ -59,7 +55,7 @@ module.exports = {
       revenue_amount: 0,
       project_type: 'internal_project',
       visible_to_all: true,
-      expected_deal_value: null,
+      expected_deal_value: 7890000,
       id: '7442427864764387329',
     },
     outputFields: [
@@ -80,10 +76,6 @@ module.exports = {
       { key: 'project_owner__full_name', label: 'Project Owner Full Name' },
       { key: 'project_owner__email', label: 'Project Owner Email' },
       { key: 'project_owner__role', label: 'Project Owner Role' },
-      {
-        key: 'project_owner__phone_number',
-        label: 'Project Owner Phone Number',
-      },
       {
         key: 'project_owner__is_customer',
         label: 'Project Owner Is Customer',

@@ -1,12 +1,12 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/company/`,
+    url: `${process.env.NGROK_URL}/company/`,
     method: 'GET',
     headers: {},
     params: {},
     removeMissingValuesFrom: {
-      body: false,
-      params: false,
+      body: true,
+      params: true,
     },
   };
 
@@ -49,7 +49,7 @@ module.exports = {
       vendor_being_replaced: 'Projetly',
       replacement_urgency: 'low',
       partner_type: '',
-      parent_company: '',
+      parent_company: 'Projetly Marketplace',
       contacts_count: 0,
       creation_time: '2026-04-28T11:19:58.047000Z',
       last_update_time: '2026-04-28T11:19:58.047000Z',

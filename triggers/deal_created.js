@@ -1,16 +1,18 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/project/info/deals/`,
+    url: `${process.env.NGROK_URL}/deals/`,
     method: 'GET',
     headers: {
       Accept: 'application/json',
     },
     params: {
+      project_type: 'deal',
+      module: 'deal_plan',
       org_temp_id: bundle.inputData.select_pipeline,
     },
     removeMissingValuesFrom: {
-      body: false,
-      params: false,
+      body: true,
+      params: true,
     },
   };
 
@@ -42,7 +44,6 @@ module.exports = {
       revenue: '$ 0',
       show_forecasted_date: false,
       forecasted_date: null,
-      project_fee: null,
       project_owner: {
         full_name: 'Admin Projetly',
         email: 'Admin@projetly.ai',
@@ -86,7 +87,6 @@ module.exports = {
         type: 'boolean',
       },
       { key: 'forecasted_date', label: 'Forecasted Date', type: 'datetime' },
-      { key: 'project_fee', label: 'Project Fee', type: 'number' },
       { key: 'project_owner__full_name', label: 'Deal Owner Full Name' },
       { key: 'project_owner__email', label: 'Deal Owner Email' },
       { key: 'project_owner__role', label: 'Deal Owner Role' },

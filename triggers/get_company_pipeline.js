@@ -8,7 +8,7 @@ const perform = async (z, bundle) => {
     params: {
       module: 'templates',
       template_type: 'pipelines',
-      sub_template_type: 4,
+      sub_template_type: 6,
       items_per_page: 20,
       page: bundle.meta.page + 1,
     },
@@ -36,9 +36,9 @@ module.exports = {
     perform: perform,
     canPaginate: true,
     sample: {
-      id: '7424309800764182529',
-      org_temp_id: '7424309800764182529',
-      template_name: 'Salesforce Default',
+      id: '7450876547860271105',
+      org_temp_id: '7450876547860271105',
+      template_name: 'Company Lead Status',
     },
     outputFields: [
       { key: 'id', label: 'Id' },
@@ -47,10 +47,10 @@ module.exports = {
     ],
   },
   display: {
-    description: 'Triggers when users select Specific Pipeline from Dropdown',
+    description: 'Triggers when users select Specific Pipeline from Dropdown.',
     hidden: true,
-    label: 'Get Deal Pipeline',
+    label: 'Get Company Pipeline',
   },
-  key: 'get_pipeline',
+  key: 'get_company_pipeline',
   noun: 'Pipeline',
 };

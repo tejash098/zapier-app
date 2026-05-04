@@ -7,8 +7,8 @@ const perform = async (z, bundle) => {
     },
     params: {
       module: 'templates',
-      template_type: 'pipelines',
-      sub_template_type: 4,
+      template_type: 'project',
+      sub_template_type: bundle.inputData.project_type || null,
       items_per_page: 20,
       page: bundle.meta.page + 1,
     },
@@ -25,6 +25,7 @@ const perform = async (z, bundle) => {
       org_temp_id: result.org_temp_id,
       template_name: result.template_name,
     }));
+
     // You can do any parsing you need for results here before returning them
 
     return results;
@@ -34,11 +35,26 @@ const perform = async (z, bundle) => {
 module.exports = {
   operation: {
     perform: perform,
+    inputFields: [
+      {
+        key: 'project_type',
+        type: 'string',
+        label: 'Project Type',
+        helpText: 'Enter the Project Type.',
+        choices: {
+          onboarding: 'Onboarding',
+          service_delivery: 'Service Delivery',
+        },
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+    ],
     canPaginate: true,
     sample: {
-      id: '7424309800764182529',
-      org_temp_id: '7424309800764182529',
-      template_name: 'Salesforce Default',
+      id: '7424309799656886273',
+      org_temp_id: '7424309799656886273',
+      template_name: 'CRM',
     },
     outputFields: [
       { key: 'id', label: 'Id' },
@@ -47,10 +63,11 @@ module.exports = {
     ],
   },
   display: {
-    description: 'Triggers when users select Specific Pipeline from Dropdown',
+    description:
+      'Triggers when users select Specific Project type from Dropdown',
     hidden: true,
-    label: 'Get Deal Pipeline',
+    label: 'Get Project Template',
   },
-  key: 'get_pipeline',
-  noun: 'Pipeline',
+  key: 'get_project_template',
+  noun: 'Template',
 };

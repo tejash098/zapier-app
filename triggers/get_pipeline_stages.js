@@ -1,20 +1,20 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/templates/template/paginated-templates/`,
+    url: `${process.env.NGROK_URL}/templates/`,
     method: 'GET',
     headers: {
       Accept: 'application/json',
     },
     params: {
+      module: 'template',
       template_type: 'pipelines',
       page: bundle.meta.page + 1,
       sub_template_type: 4,
-      sort: 'creation_time',
-      items_per_page: 10,
+      items_per_page: 20,
     },
     removeMissingValuesFrom: {
-      body: false,
-      params: false,
+      body: true,
+      params: true,
     },
   };
 
@@ -24,11 +24,11 @@ const perform = async (z, bundle) => {
       (result) => result.org_temp_id === bundle.inputData.selected_pipeline,
     );
 
-    // You can do any parsing you need for results here before returning them
     const milestones = results.flatMap((item) =>
       (item.milestone || []).map((m) => ({
-        ...m,
         id: m.milestone_id,
+        milestone_id: m.milestone_id,
+        name: m.name,
       })),
     );
     return milestones;
@@ -51,14 +51,14 @@ module.exports = {
       },
     ],
     sample: {
-      name: 'Discovery & Alignment',
-      milestone_id: '7424309800785154049',
-      id: '7424309800785154049',
+      id: '7424309800764182529',
+      milestone_id: '7424309800764182529',
+      name: 'Prospecting',
     },
     outputFields: [
-      { key: 'name', label: 'Stage Name' },
-      { key: 'milestone_id', label: 'Milestone Id' },
       { key: 'id', label: 'Id' },
+      { key: 'milestone_id', label: 'Milestone Id' },
+      { key: 'name', label: 'Stage Name' },
     ],
   },
   display: {

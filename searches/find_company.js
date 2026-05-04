@@ -1,6 +1,6 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/company/`,
+    url: `${process.env.NGROK_URL}/company/`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -15,15 +15,68 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.results.filter(
-      (result) =>
-        result[bundle.inputData.search_property_name] ===
-        bundle.inputData.search_property_value,
-    );
+    const results = data.results.filter((result) => {
+      const left = String(
+        result[bundle.inputData.search_property_name] ?? '',
+      ).toLowerCase();
+      const right = String(
+        bundle.inputData.search_property_value ?? '',
+      ).toLowerCase();
+      return left === right;
+    });
     // You can do any parsing you need for results here before returning them
 
     return results;
   });
+};
+
+const inputFields = async (z, bundle) => {
+  const fieldMap = {
+    company_name: {
+      label: 'Company Name',
+      helpText: 'Enter a Company name',
+    },
+    domain: {
+      label: 'Domain',
+      helpText: 'Enter a domain',
+    },
+    company_type: {
+      label: 'Company Type',
+      helpText: 'Enter a company type',
+    },
+    category: {
+      label: 'Category',
+      helpText: 'Enter a category',
+    },
+    lead_status: {
+      label: 'Lead Status',
+      helpText: 'Enter a lead status',
+    },
+    industry: {
+      label: 'Industry',
+      helpText: 'Enter an industry',
+    },
+    parent_company: {
+      label: 'Parent Company',
+      helpText: 'Enter a parent company',
+    },
+  };
+
+  const selected = bundle.inputData.search_property_name;
+
+  if (fieldMap[selected]) {
+    return [
+      {
+        key: selected,
+        label: fieldMap[selected].label,
+        type: 'string',
+        required: true,
+        helpText: fieldMap[selected].helpText,
+      },
+    ];
+  }
+
+  return [];
 };
 
 module.exports = {
@@ -57,18 +110,9 @@ module.exports = {
         },
         required: true,
         list: false,
-        altersDynamicFields: false,
+        altersDynamicFields: true,
       },
-      {
-        key: 'search_property_value',
-        label: 'Enter Search Property Value',
-        type: 'string',
-        helpText:
-          'Select Company Field Value on which Find Action will be performed.',
-        required: true,
-        list: false,
-        altersDynamicFields: false,
-      },
+      inputFields,
     ],
     sample: {
       id: '7454851902669328385',

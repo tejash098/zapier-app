@@ -1,6 +1,6 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/contact/`,
+    url: `${process.env.NGROK_URL}/contact/`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -19,15 +19,76 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.results.filter(
-      (result) =>
-        result[bundle.inputData.search_property_name] ===
-        bundle.inputData.search_property_value,
-    );
+    const results = data.results.filter((result) => {
+      const left = String(
+        result[bundle.inputData.search_property_name] ?? '',
+      ).toLowerCase();
+      const right = String(
+        bundle.inputData.search_property_value ?? '',
+      ).toLowerCase();
+      return left === right;
+    });
     // You can do any parsing you need for results here before returning them
 
     return results;
   });
+};
+
+const inputFields = async (z, bundle) => {
+  const fieldMap = {
+    full_name: {
+      label: 'Full Name',
+      helpText: 'Enter the full name',
+    },
+    primary_email: {
+      label: 'Primary Email',
+      helpText: 'Enter the primary email',
+    },
+    department: {
+      label: 'Department',
+      helpText: 'Enter the department',
+    },
+    job_title: {
+      label: 'Job Title',
+      helpText: 'Enter the job title',
+    },
+    lead_status: {
+      label: 'Lead Status',
+      helpText: 'Enter the lead status',
+    },
+    phone__primary: {
+      label: 'Primary Phone',
+      helpText: 'Enter the primary phone number',
+    },
+    linkedin_url: {
+      label: 'Linkedin Url',
+      helpText: 'Enter the LinkedIn profile URL',
+    },
+    twitter_url: {
+      label: 'Twitter Url',
+      helpText: 'Enter the Twitter profile URL',
+    },
+    reports_to: {
+      label: 'Reports To',
+      helpText: 'Enter the reporting person',
+    },
+  };
+
+  const selected = bundle.inputData.search_property_name;
+
+  if (fieldMap[selected]) {
+    return [
+      {
+        key: selected,
+        label: fieldMap[selected].label,
+        type: 'string',
+        required: true,
+        helpText: fieldMap[selected].helpText,
+      },
+    ];
+  }
+
+  return [];
 };
 
 module.exports = {
@@ -65,16 +126,7 @@ module.exports = {
         list: false,
         altersDynamicFields: false,
       },
-      {
-        key: 'search_property_value',
-        label: 'Enter Search Property Value',
-        type: 'string',
-        helpText:
-          'Select Contact Field Value on which Find Action will be performed.',
-        required: true,
-        list: false,
-        altersDynamicFields: false,
-      },
+      inputFields,
     ],
     sample: {
       id: '7454861106754883585',

@@ -1,6 +1,6 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/contact/`,
+    url: `${process.env.NGROK_URL}/contact/`,
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -58,9 +58,9 @@ module.exports = {
       phone: { primary: '+ 1 628 6005116' },
       campaign: '',
       timezone: 'Asia/Calcutta',
-      last_activity_date: null,
-      linkedin_url: '',
-      twitter_url: '',
+      last_activity_date: '2026-04-28T11:56:32.472000Z',
+      linkedin_url: 'https://linkedInurl.com',
+      twitter_url: 'https://twitter.com',
       linked_user: { full_name: 'Admin Projetly' },
       creation_time: '2026-04-28T11:56:32.472000Z',
       last_update_time: '2026-04-28T11:56:32.472000Z',

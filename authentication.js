@@ -1,9 +1,9 @@
 module.exports = {
   type: 'oauth2',
-  test: { url: '{{process.env.NGROK_URL}}/api/get_user_info' },
+  test: { url: '{{process.env.NGROK_URL}}/get_user_info' },
   oauth2Config: {
     authorizeUrl: {
-      url: '{{process.env.NGROK_URL}}/api/auth/login',
+      url: '{{process.env.NGROK_URL}}/auth/login',
       params: {
         name: '{{bundle.inputData.name}}',
         client_id: '{{process.env.CLIENT_ID}}',
@@ -25,7 +25,7 @@ module.exports = {
         accept: 'application/json',
       },
       method: 'POST',
-      url: '{{process.env.NGROK_URL}}/api/auth/token',
+      url: '{{process.env.NGROK_URL}}/auth/token',
     },
     refreshAccessToken: {
       body: {
@@ -37,7 +37,7 @@ module.exports = {
         accept: 'application/json',
       },
       method: 'POST',
-      url: '{{process.env.NGROK_URL}}/api/auth_refresh/',
+      url: '{{process.env.NGROK_URL}}/auth_refresh/',
     },
     autoRefresh: true,
   },

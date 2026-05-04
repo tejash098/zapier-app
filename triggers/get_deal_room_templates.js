@@ -7,7 +7,7 @@ const perform = async (z, bundle) => {
     },
     params: {
       module: 'templates',
-      template_type: 'pipelines',
+      template_type: 'deal_stages',
       sub_template_type: 4,
       items_per_page: 20,
       page: bundle.meta.page + 1,
@@ -25,6 +25,7 @@ const perform = async (z, bundle) => {
       org_temp_id: result.org_temp_id,
       template_name: result.template_name,
     }));
+
     // You can do any parsing you need for results here before returning them
 
     return results;
@@ -34,23 +35,25 @@ const perform = async (z, bundle) => {
 module.exports = {
   operation: {
     perform: perform,
-    canPaginate: true,
+    type: 'polling',
     sample: {
-      id: '7424309800764182529',
-      org_temp_id: '7424309800764182529',
-      template_name: 'Salesforce Default',
+      id: '7424309800739016705',
+      org_temp_id: '7424309800739016705',
+      template_name: 'Sales Deal Room',
     },
     outputFields: [
       { key: 'id', label: 'Id' },
       { key: 'org_temp_id', label: 'Org Temp Id' },
       { key: 'template_name', label: 'Template Name' },
     ],
+    canPaginate: true,
   },
   display: {
-    description: 'Triggers when users select Specific Pipeline from Dropdown',
+    description:
+      'Triggers when users select Specific Deal Room Template from Dropdown.',
     hidden: true,
-    label: 'Get Deal Pipeline',
+    label: 'Get Deal Room Templates',
   },
-  key: 'get_pipeline',
-  noun: 'Pipeline',
+  key: 'get_deal_room_templates',
+  noun: 'Template',
 };

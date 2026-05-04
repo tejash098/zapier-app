@@ -1,6 +1,6 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/company/`,
+    url: `${process.env.NGROK_URL}/company/`,
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -57,7 +57,7 @@ module.exports = {
       vendor_being_replaced: 'Projetly',
       replacement_urgency: 'low',
       partner_type: '',
-      parent_company: '',
+      parent_company: 'Projetly Marketplace',
       contacts_count: 0,
       creation_time: '2026-04-28T11:19:58.047000Z',
       last_update_time: '2026-04-28T11:19:58.047000Z',
@@ -81,16 +81,6 @@ module.exports = {
       { key: 'connection_strength', label: 'Connection Strength' },
       { key: 'connection_source', label: 'Connection Source' },
       { key: 'operating_regions[]0', label: 'Operating Regions' },
-      { key: 'operating_regions[]1' },
-      { key: 'operating_regions[]2' },
-      { key: 'operating_regions[]3' },
-      { key: 'operating_regions[]4' },
-      { key: 'operating_regions[]5' },
-      { key: 'operating_regions[]6' },
-      { key: 'operating_regions[]7' },
-      { key: 'operating_regions[]8' },
-      { key: 'operating_regions[]9' },
-      { key: 'operating_regions[]10' },
       { key: 'category', label: 'Category' },
       { key: 'vendor_being_replaced', label: 'Vendor Being Replaced' },
       { key: 'replacement_urgency', label: 'Replacement Urgency' },
