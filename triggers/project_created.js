@@ -1,11 +1,16 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/project/info/`,
+    url: `${process.env.NGROK_URL}/project/`,
     method: 'GET',
     headers: {
       Accept: 'application/json',
     },
-    params: {},
+    params: {
+      items_per_page: 10,
+      page: bundle.meta.page + 1,
+      project_type: 'project',
+      sort: '-creation_time',
+    },
     removeMissingValuesFrom: {
       body: true,
       params: true,
@@ -14,15 +19,10 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.results
-      .map((result) => ({
-        ...result,
-        id: result.project_id,
-      }))
-      .sort(
-        (a, b) => new Date(b.start_date || 0) - new Date(a.start_date || 0),
-      );
-
+    const results = data.results.map((result) => ({
+      ...result,
+      id: result.project_id,
+    }));
     // You can do any parsing you need for results here before returning them
 
     return results;
@@ -93,6 +93,8 @@ module.exports = {
       },
       { key: 'id', label: 'Id' },
     ],
+    inputFields: [],
+    canPaginate: true,
   },
   display: {
     description: 'Triggers when a new project is created.',

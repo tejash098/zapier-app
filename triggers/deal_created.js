@@ -1,14 +1,15 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/deals/`,
+    url: `${process.env.NGROK_URL}/project/`,
     method: 'GET',
     headers: {
       Accept: 'application/json',
     },
     params: {
+      items_per_page: 10,
+      page: bundle.meta.page + 1,
       project_type: 'deal',
-      module: 'deal_plan',
-      org_temp_id: bundle.inputData.select_pipeline,
+      sort: '-creation_time',
     },
     removeMissingValuesFrom: {
       body: true,
@@ -18,15 +19,12 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.deals
-      .map((result) => ({
-        ...result,
-        id: result.project_id,
-      }))
-      .sort(
-        (a, b) => new Date(b.start_date || 0) - new Date(a.start_date || 0),
-      );
+    const results = data.results.map((result) => ({
+      ...result,
+      id: result.project_id,
+    }));
     // You can do any parsing you need for results here before returning them
+
     return results;
   });
 };
@@ -48,24 +46,17 @@ module.exports = {
         full_name: 'Admin Projetly',
         email: 'Admin@projetly.ai',
         role: 'Organization Admin',
-        phone_number: '',
         is_customer: false,
       },
       account_name: 'Projetly Marketplace',
       region: 'Asia',
       project_customers: [
-        {
-          full_name: 'Admin',
-          email: 'Admin@projetly.ai',
-          role: '',
-          phone_number: '',
-        },
+        { full_name: 'Admin', email: 'Admin@projetly.ai', role: '' },
       ],
       customer_project_owner: {
         full_name: 'tejas',
         email: '',
         role: 'Customer',
-        phone_number: '',
       },
       revenue_amount: 0,
       project_type: 'sales_deal_room',
@@ -90,7 +81,6 @@ module.exports = {
       { key: 'project_owner__full_name', label: 'Deal Owner Full Name' },
       { key: 'project_owner__email', label: 'Deal Owner Email' },
       { key: 'project_owner__role', label: 'Deal Owner Role' },
-      { key: 'project_owner__phone_number', label: 'Deal Owner Phone Number' },
       {
         key: 'project_owner__is_customer',
         label: 'Deal Owner Is Customer',
@@ -101,7 +91,6 @@ module.exports = {
       { key: 'customer_project_owner__full_name', label: 'Customer Full Name' },
       { key: 'customer_project_owner__email', label: 'Customer Email' },
       { key: 'customer_project_owner__role', label: 'Customer Role' },
-      { key: 'customer_project_owner__phone_number', label: 'Customer Phone' },
       { key: 'revenue_amount', label: 'Revenue Amount', type: 'number' },
       { key: 'project_type', label: 'Project Type' },
       { key: 'visible_to_all', type: 'boolean', label: 'Visible To All' },
@@ -112,18 +101,8 @@ module.exports = {
       },
       { key: 'id', label: 'Id' },
     ],
-    inputFields: [
-      {
-        key: 'select_pipeline',
-        type: 'string',
-        label: 'Select Specific Pipeline',
-        dynamic: 'get_pipeline.id.template_name',
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-        helpText: 'Select a specific pipeline to filter Deals',
-      },
-    ],
+    inputFields: [],
+    canPaginate: true,
   },
   display: {
     description: 'Triggers when a new deal is created.',

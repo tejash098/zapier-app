@@ -1,6 +1,6 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.BASE_URL}/api/project/info/deals/`,
+    url: `${process.env.NGROK_URL}/deals/`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -20,11 +20,15 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.deals.filter(
-      (result) =>
-        String(result[bundle.inputData.search_property_name]) ===
-        String(bundle.inputData.search_property_value),
-    );
+    const results = data.deals.filter((result) => {
+      const left = String(
+        result[bundle.inputData.deal_search_name] ?? '',
+      ).toLowerCase();
+      const right = String(
+        bundle.inputData[bundle.inputData.deal_search_name] ?? '',
+      ).toLowerCase();
+      return left === right;
+    });
 
     // You can do any parsing you need for results here before returning them
 

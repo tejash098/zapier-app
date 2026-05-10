@@ -7,9 +7,7 @@ const perform = async (z, bundle) => {
       Accept: 'application/json',
     },
     params: {
-      help_text: bundle.inputData.help_text,
-      search_property_name: bundle.inputData.search_property_name,
-      search_property_value: bundle.inputData.search_property_value,
+      limit: 50,
     },
     removeMissingValuesFrom: {
       body: false,
@@ -24,7 +22,7 @@ const perform = async (z, bundle) => {
         result[bundle.inputData.search_property_name] ?? '',
       ).toLowerCase();
       const right = String(
-        bundle.inputData.search_property_value ?? '',
+        bundle.inputData[bundle.inputData.search_property_name] ?? '',
       ).toLowerCase();
       return left === right;
     });
@@ -124,7 +122,7 @@ module.exports = {
         },
         required: true,
         list: false,
-        altersDynamicFields: false,
+        altersDynamicFields: true,
       },
       inputFields,
     ],

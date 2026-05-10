@@ -5,10 +5,13 @@ const perform = async (z, bundle) => {
     headers: {
       Accept: 'application/json',
     },
-    params: {},
+    params: {
+      limit: 20,
+      sort: '-last_update_time',
+    },
     removeMissingValuesFrom: {
-      body: false,
-      params: false,
+      body: true,
+      params: true,
     },
   };
 
@@ -41,7 +44,6 @@ module.exports = {
       domain: 'https://projetly.ai/',
       linkedin_url: 'https://linkedInurl.com',
       twitter_url: 'https://twitter.com',
-      hq_location: 'Bengaluru, Karnataka, India',
       hq_country: 'India',
       industry: 'Sales & Marketing Automation',
       description:
@@ -70,7 +72,6 @@ module.exports = {
       { key: 'domain', label: 'Domain' },
       { key: 'linkedin_url', label: 'LinkedIn URL' },
       { key: 'twitter_url', label: 'Twitter URL' },
-      { key: 'hq_location', label: 'Location' },
       { key: 'hq_country', label: 'Country' },
       { key: 'industry', label: 'Industry' },
       { key: 'description', label: 'Description' },

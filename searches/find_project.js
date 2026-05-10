@@ -6,20 +6,29 @@ const perform = async (z, bundle) => {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-    params: {},
+    params: {
+      items_per_page: 50,
+      page: bundle.meta.page + 1,
+      project_type: 'project',
+      module: 'projects',
+    },
     removeMissingValuesFrom: {
-      body: false,
-      params: false,
+      body: true,
+      params: true,
     },
   };
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.results.filter(
-      (result) =>
-        String(result[bundle.inputData.search_property_name]) ===
-        String(bundle.inputData.search_property_value),
-    );
+    const results = data.results.filter((result) => {
+      const left = String(
+        result[bundle.inputData.project_search_name] ?? '',
+      ).toLowerCase();
+      const right = String(
+        bundle.inputData[bundle.inputData.project_search_name] ?? '',
+      ).toLowerCase();
+      return left === right;
+    });
 
     // You can do any parsing you need for results here before returning them
 
@@ -114,7 +123,7 @@ module.exports = {
         helpText:
           'Select Company Field Name on which Find Action will be performed.',
         choices: {
-          project_name: 'Deal Name',
+          project_name: 'Project Name',
           account_name: 'Account / Company Name',
           region: 'Region',
           project_type: 'Project Type',

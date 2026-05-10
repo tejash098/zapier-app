@@ -13,6 +13,7 @@ const getDealRoomTemplatesTrigger = require('./triggers/get_deal_room_templates.
 const getCompanyPipelineTrigger = require('./triggers/get_company_pipeline.js');
 const getContactPipelineTrigger = require('./triggers/get_contact_pipeline.js');
 const getProjectTemplateTrigger = require('./triggers/get_project_template.js');
+const getUsersTrigger = require('./triggers/get_users.js');
 const createCompanyCreate = require('./creates/create_company.js');
 const createContactCreate = require('./creates/create_contact.js');
 const createDealCreate = require('./creates/create_deal.js');
@@ -43,6 +44,7 @@ module.exports = {
     [getCompanyPipelineTrigger.key]: getCompanyPipelineTrigger,
     [getContactPipelineTrigger.key]: getContactPipelineTrigger,
     [getProjectTemplateTrigger.key]: getProjectTemplateTrigger,
+    [getUsersTrigger.key]: getUsersTrigger,
   },
   searches: {
     [findProjectSearch.key]: findProjectSearch,
@@ -95,4 +97,5 @@ module.exports = {
     },
   },
   authentication: authentication,
+  flags: { skipHttpPatch: false, skipThrowForStatus: true },
 };

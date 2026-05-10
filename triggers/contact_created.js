@@ -5,7 +5,10 @@ const perform = async (z, bundle) => {
     headers: {
       Accept: 'application/json',
     },
-    params: {},
+    params: {
+      limit: 20,
+      sort: '-creation_time',
+    },
     removeMissingValuesFrom: {
       body: true,
       params: true,

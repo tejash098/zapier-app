@@ -6,7 +6,11 @@ const perform = async (z, bundle) => {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
-    params: {},
+    params: {
+      limit: 50,
+      key: bundle.inputData.search_property_name,
+      value: bundle.inputData[bundle.inputData.search_property_name],
+    },
     removeMissingValuesFrom: {
       body: true,
       params: true,
@@ -20,7 +24,7 @@ const perform = async (z, bundle) => {
         result[bundle.inputData.search_property_name] ?? '',
       ).toLowerCase();
       const right = String(
-        bundle.inputData.search_property_value ?? '',
+        bundle.inputData[bundle.inputData.search_property_name] ?? '',
       ).toLowerCase();
       return left === right;
     });
