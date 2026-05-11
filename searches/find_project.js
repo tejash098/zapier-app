@@ -1,6 +1,28 @@
 const perform = async (z, bundle) => {
+  const filter = [
+    {
+      id: 1,
+      attribute: {
+        name: '',
+        key: bundle.inputData.project_search_name,
+        option_type: '',
+      },
+      condition: {
+        name: '',
+        key: bundle.inputData.condition,
+        types: ['input', 'select'],
+      },
+      option: {
+        name: '',
+        key: '',
+        isApiCall: false,
+      },
+      value: bundle.inputData[bundle.inputData.project_search_name],
+    },
+  ];
+
   const options = {
-    url: `${process.env.BASE_URL}/api/project/info/`,
+    url: `${process.env.NGROK_URL}/project/`,
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -11,27 +33,17 @@ const perform = async (z, bundle) => {
       page: bundle.meta.page + 1,
       project_type: 'project',
       module: 'projects',
+      filter: JSON.stringify(filter),
     },
     removeMissingValuesFrom: {
-      body: true,
-      params: true,
+      body: false,
+      params: false,
     },
   };
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.results.filter((result) => {
-      const left = String(
-        result[bundle.inputData.project_search_name] ?? '',
-      ).toLowerCase();
-      const right = String(
-        bundle.inputData[bundle.inputData.project_search_name] ?? '',
-      ).toLowerCase();
-      return left === right;
-    });
-
-    // You can do any parsing you need for results here before returning them
-
+    const results = data.results;
     return results;
   });
 };
@@ -39,64 +51,44 @@ const perform = async (z, bundle) => {
 const inputFields = async (z, bundle) => {
   const fieldMap = {
     project_name: {
-      label: 'Deal Name',
+      key: 'project_name',
+      label: 'Project Name',
       type: 'string',
-      helpText: 'Enter the deal name',
+      required: true,
+      helpText: 'Enter the Project name',
     },
-    account_name: {
-      label: 'Account / Company Name',
+    status__status_key: {
+      key: 'status__status_key',
+      label: 'Status',
       type: 'string',
-      helpText: 'Enter the account or company name',
-    },
-    region: {
-      label: 'Region',
-      type: 'string',
-      helpText: 'Enter the region',
-    },
-    project_type: {
-      label: 'Project Type',
-      type: 'string',
-      helpText: 'Enter the project type',
-    },
-    start_date: {
-      label: 'Start Date',
-      type: 'datetime',
-      helpText: 'Select the start date',
-    },
-    due_date: {
-      label: 'Due Date',
-      type: 'datetime',
-      helpText: 'Select the due date',
-    },
-    project_fee: {
-      label: 'Project Fee',
-      type: 'number',
-      helpText: 'Enter the project fee',
-    },
-    revenue_amount: {
-      label: 'Revenue Amount',
-      type: 'number',
-      helpText: 'Enter the revenue amount',
-    },
-    expected_deal_value: {
-      label: 'Expected Deal Value',
-      type: 'number',
-      helpText: 'Enter the expected deal value',
+      required: true,
+      altersDynamicFields: false,
+      choices: [
+        {
+          label: 'Not Started',
+          value: 'not_started',
+        },
+        {
+          label: 'In Progress',
+          value: 'in_progress',
+        },
+        {
+          label: 'On Hold',
+          value: 'on_hold',
+        },
+        {
+          label: 'Completed',
+          value: 'completed',
+        },
+      ],
+      helpText: 'Search By Status of Project',
     },
   };
 
   const selected = bundle.inputData.project_search_name;
 
   if (fieldMap[selected]) {
-    return [
-      {
-        key: selected,
-        label: fieldMap[selected].label,
-        type: fieldMap[selected].type,
-        required: true,
-        helpText: fieldMap[selected].helpText,
-      },
-    ];
+    return [fieldMap[selected]];
   }
 
   return [];
@@ -107,35 +99,24 @@ module.exports = {
     perform: perform,
     inputFields: [
       {
-        key: 'help_text',
-        label: 'Important',
-        type: 'copy',
-        helpText:
-          '**Important**: All search fields use the **EQ (equals)** operator for exact matches. This means the search will only return results where the property value exactly matches what you enter.',
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
         key: 'project_search_name',
         label: 'Select Search Property Name',
         type: 'string',
         helpText:
           'Select Company Field Name on which Find Action will be performed.',
-        choices: {
-          project_name: 'Project Name',
-          account_name: 'Account / Company Name',
-          region: 'Region',
-          project_type: 'Project Type',
-          start_date: 'Start Date',
-          due_date: 'Due Date',
-          project_fee: 'Project Fee',
-          revenue_amount: 'Revenue Amount',
-          expected_deal_value: 'Expected Deal Value',
-        },
+        choices: { project_name: 'Project Name', status__status_key: 'Status' },
         required: true,
         list: false,
         altersDynamicFields: true,
+      },
+      {
+        key: 'condition',
+        label: 'Select Condition',
+        type: 'string',
+        choices: { is: 'Is', not: 'Not', contains: 'Contains' },
+        required: true,
+        list: false,
+        altersDynamicFields: false,
       },
       inputFields,
     ],

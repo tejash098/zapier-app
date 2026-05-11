@@ -1,4 +1,26 @@
 const perform = async (z, bundle) => {
+  const filter = [
+    {
+      id: 1,
+      attribute: {
+        name: '',
+        key: bundle.inputData.search_property_name,
+        option_type: '',
+      },
+      condition: {
+        name: '',
+        key: bundle.inputData.condition,
+        types: ['input', 'select'],
+      },
+      option: {
+        name: '',
+        key: '',
+        isApiCall: false,
+      },
+      value: bundle.inputData[bundle.inputData.search_property_name],
+    },
+  ];
+
   const options = {
     url: `${process.env.NGROK_URL}/contact/`,
     method: 'GET',
@@ -8,26 +30,17 @@ const perform = async (z, bundle) => {
     },
     params: {
       limit: 50,
+      filter: JSON.stringify(filter),
     },
     removeMissingValuesFrom: {
-      body: false,
-      params: false,
+      body: true,
+      params: true,
     },
   };
 
   return z.request(options).then((response) => {
     const data = response.json;
-    const results = data.results.filter((result) => {
-      const left = String(
-        result[bundle.inputData.search_property_name] ?? '',
-      ).toLowerCase();
-      const right = String(
-        bundle.inputData[bundle.inputData.search_property_name] ?? '',
-      ).toLowerCase();
-      return left === right;
-    });
-    // You can do any parsing you need for results here before returning them
-
+    const results = data.results;
     return results;
   });
 };
@@ -35,74 +48,106 @@ const perform = async (z, bundle) => {
 const inputFields = async (z, bundle) => {
   const fieldMap = {
     full_name: {
+      key: 'full_name',
       label: 'Full Name',
+      type: 'string',
+      required: true,
       helpText: 'Enter the full name',
     },
-    primary_email: {
-      label: 'Primary Email',
-      helpText: 'Enter the primary email',
-    },
-    department: {
-      label: 'Department',
-      helpText: 'Enter the department',
-    },
+
     job_title: {
+      key: 'job_title',
       label: 'Job Title',
+      type: 'string',
+      required: true,
       helpText: 'Enter the job title',
     },
-    lead_status: {
-      label: 'Lead Status',
-      helpText: 'Enter the lead status',
-    },
-    phone__primary: {
-      label: 'Primary Phone',
-      helpText: 'Enter the primary phone number',
-    },
-    linkedin_url: {
-      label: 'Linkedin Url',
-      helpText: 'Enter the LinkedIn profile URL',
-    },
-    twitter_url: {
-      label: 'Twitter Url',
-      helpText: 'Enter the Twitter profile URL',
-    },
-    reports_to: {
-      label: 'Reports To',
-      helpText: 'Enter the reporting person',
+
+    location: {
+      key: 'location',
+      label: 'Location',
+      type: 'string',
+      required: true,
+      helpText: 'Enter the location',
     },
   };
 
   const selected = bundle.inputData.search_property_name;
 
+  // Normal input fields
   if (fieldMap[selected]) {
-    return [
-      {
-        key: selected,
-        label: fieldMap[selected].label,
-        type: 'string',
-        required: true,
-        helpText: fieldMap[selected].helpText,
-      },
-    ];
+    return [fieldMap[selected]];
   }
 
-  return [];
+  // Dynamic dropdown/API fields
+  const options = {
+    url: `${process.env.NGROK_URL}/contact/`,
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+    params: {
+      options: 'options',
+    },
+    removeMissingValuesFrom: {
+      body: true,
+      params: true,
+    },
+  };
+
+  return z.request(options).then((response) => {
+    const data = response.json || {};
+
+    let choices = [];
+
+    // Lead Status
+    if (selected === 'lead_status') {
+      choices = (data.contact_lead_statuses || []).map((item) => ({
+        label: item.status_name,
+        value: item.status_key,
+      }));
+
+      return [
+        {
+          key: 'lead_status',
+          label: 'Lead Status',
+          type: 'string',
+          choices,
+          required: true,
+          helpText: 'Select lead status',
+          altersDynamicFields: false,
+        },
+      ];
+    }
+
+    // Contact Category
+    if (selected === 'person_category') {
+      choices = (data.contact_person_categories || []).map((item) => ({
+        label: item.key,
+        value: item.key,
+      }));
+
+      return [
+        {
+          key: 'person_category',
+          label: 'Person Category',
+          type: 'string',
+          choices,
+          required: true,
+          helpText: 'Select contact person category',
+          altersDynamicFields: false,
+        },
+      ];
+    }
+
+    return [];
+  });
 };
 
 module.exports = {
   operation: {
     perform: perform,
     inputFields: [
-      {
-        key: 'help_text',
-        label: 'Important',
-        type: 'copy',
-        helpText:
-          '**Important**: All search fields use the **EQ (equals)** operator for exact matches. This means the search will only return results where the property value exactly matches what you enter.',
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
       {
         key: 'search_property_name',
         label: 'Select Search Property Name',
@@ -111,18 +156,23 @@ module.exports = {
           'Select Contact Field Name on which Find Action will be performed.',
         choices: {
           full_name: 'Full Name',
-          primary_email: 'Primary Email',
-          department: 'Department',
           job_title: 'Job Title',
           lead_status: 'Lead Status',
-          phone__primary: 'Primary Phone',
-          linkedin_url: 'Linkedin Url',
-          twitter_url: 'Twitter Url',
-          reports_to: 'Reports To',
+          location: 'Location',
+          person_category: 'Person Category',
         },
         required: true,
         list: false,
         altersDynamicFields: true,
+      },
+      {
+        key: 'condition',
+        label: 'Select Condition',
+        type: 'string',
+        choices: { is: 'Is', not: 'Not', contains: 'contains' },
+        required: true,
+        list: false,
+        altersDynamicFields: false,
       },
       inputFields,
     ],

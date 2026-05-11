@@ -1,4 +1,26 @@
 const perform = async (z, bundle) => {
+  const filter = [
+    {
+      id: 1,
+      attribute: {
+        name: '',
+        key: bundle.inputData.search_property_name,
+        option_type: '',
+      },
+      condition: {
+        name: '',
+        key: bundle.inputData.condition,
+        types: ['input', 'select'],
+      },
+      option: {
+        name: '',
+        key: '',
+        isApiCall: false,
+      },
+      value: bundle.inputData[bundle.inputData.search_property_name],
+    },
+  ];
+
   const options = {
     url: `${process.env.NGROK_URL}/company/`,
     method: 'GET',
@@ -7,9 +29,57 @@ const perform = async (z, bundle) => {
       Accept: 'application/json',
     },
     params: {
-      limit: 50,
-      key: bundle.inputData.search_property_name,
-      value: bundle.inputData[bundle.inputData.search_property_name],
+      limit: 20,
+      filter: JSON.stringify(filter),
+    },
+    removeMissingValuesFrom: {
+      body: false,
+      params: false,
+    },
+  };
+
+  return z.request(options).then((response) => {
+    const data = response.json;
+    const results = data.results;
+    return results;
+  });
+};
+
+const inputFields = async (z, bundle) => {
+  const fieldMap = {
+    company_name: {
+      key: 'company_name',
+      label: 'Company Name',
+      type: 'string',
+      required: true,
+      helpText: 'Enter a company name',
+    },
+
+    domain: {
+      key: 'domain',
+      label: 'Domain',
+      type: 'string',
+      required: true,
+      helpText: 'Enter a domain',
+    },
+  };
+
+  const selected = bundle.inputData.search_property_name;
+
+  // Simple input fields
+  if (fieldMap[selected]) {
+    return [fieldMap[selected]];
+  }
+
+  // Dynamic dropdown fields
+  const options = {
+    url: `${process.env.NGROK_URL}/company/`,
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+    params: {
+      options: 'options',
     },
     removeMissingValuesFrom: {
       body: true,
@@ -18,85 +88,98 @@ const perform = async (z, bundle) => {
   };
 
   return z.request(options).then((response) => {
-    const data = response.json;
-    const results = data.results.filter((result) => {
-      const left = String(
-        result[bundle.inputData.search_property_name] ?? '',
-      ).toLowerCase();
-      const right = String(
-        bundle.inputData[bundle.inputData.search_property_name] ?? '',
-      ).toLowerCase();
-      return left === right;
-    });
-    // You can do any parsing you need for results here before returning them
+    const data = response.json || {};
 
-    return results;
+    let choices = [];
+
+    // Company Type
+    if (selected === 'company_type') {
+      choices = (data.company_types || []).map((item) => ({
+        label: item.key,
+        value: item.key,
+      }));
+
+      return [
+        {
+          key: 'company_type',
+          label: 'Company Type',
+          type: 'string',
+          choices,
+          required: true,
+          helpText: 'Select company type',
+          altersDynamicFields: false,
+        },
+      ];
+    }
+
+    // Category
+    if (selected === 'category') {
+      choices = (data.company_categories || []).map((item) => ({
+        label: item.name,
+        value: item.value,
+      }));
+
+      return [
+        {
+          key: 'category',
+          label: 'Category',
+          type: 'string',
+          choices,
+          required: true,
+          helpText: 'Select category',
+          altersDynamicFields: false,
+        },
+      ];
+    }
+
+    // Industry -> verticals
+    if (selected === 'industry') {
+      choices = (data.verticals || []).map((item) => ({
+        label: item.name,
+        value: item.value,
+      }));
+
+      return [
+        {
+          key: 'industry',
+          label: 'Industry',
+          type: 'string',
+          choices,
+          required: true,
+          helpText: 'Select industry',
+          altersDynamicFields: false,
+        },
+      ];
+    }
+
+    // Lead Status
+    if (selected === 'lead_status') {
+      const lead_status = (data.company_lead_statuses || []).map((item) => ({
+        label: item.status_name,
+        value: item.status_key,
+      }));
+
+      return [
+        {
+          key: 'lead_status',
+          label: 'Lead Status',
+          type: 'string',
+          choices: lead_status,
+          required: true,
+          helpText: 'Select lead status',
+          altersDynamicFields: false,
+        },
+      ];
+    }
+
+    return [];
   });
-};
-
-const inputFields = async (z, bundle) => {
-  const fieldMap = {
-    company_name: {
-      label: 'Company Name',
-      helpText: 'Enter a Company name',
-    },
-    domain: {
-      label: 'Domain',
-      helpText: 'Enter a domain',
-    },
-    company_type: {
-      label: 'Company Type',
-      helpText: 'Enter a company type',
-    },
-    category: {
-      label: 'Category',
-      helpText: 'Enter a category',
-    },
-    lead_status: {
-      label: 'Lead Status',
-      helpText: 'Enter a lead status',
-    },
-    industry: {
-      label: 'Industry',
-      helpText: 'Enter an industry',
-    },
-    parent_company: {
-      label: 'Parent Company',
-      helpText: 'Enter a parent company',
-    },
-  };
-
-  const selected = bundle.inputData.search_property_name;
-
-  if (fieldMap[selected]) {
-    return [
-      {
-        key: selected,
-        label: fieldMap[selected].label,
-        type: 'string',
-        required: true,
-        helpText: fieldMap[selected].helpText,
-      },
-    ];
-  }
-
-  return [];
 };
 
 module.exports = {
   operation: {
     perform: perform,
     inputFields: [
-      {
-        key: 'help_text',
-        label: 'Important',
-        type: 'copy',
-        helpText:
-          '**Important**: All search fields use the **EQ (equals)** operator for exact matches. This means the search will only return results where the property value exactly matches what you enter.',
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
       {
         key: 'search_property_name',
         label: 'Select Search Property Name',
@@ -110,11 +193,20 @@ module.exports = {
           category: 'Category',
           lead_status: 'Lead Status',
           industry: 'Industry',
-          parent_company: 'Parent Company',
         },
         required: true,
         list: false,
         altersDynamicFields: true,
+      },
+      {
+        key: 'condition',
+        label: 'Select Condition',
+        type: 'string',
+        helpText: 'Select the Condition of filter search',
+        choices: { is: 'Is', not: 'Not', contains: 'Contains' },
+        required: true,
+        list: false,
+        altersDynamicFields: false,
       },
       inputFields,
     ],
