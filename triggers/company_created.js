@@ -86,7 +86,7 @@ module.exports = {
     ],
   },
   display: {
-    description: 'Triggers when a new company is created.',
+    description: 'Triggers when a new company is created in Projetly.',
     hidden: false,
     label: 'New Company Created',
   },

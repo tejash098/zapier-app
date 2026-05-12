@@ -97,7 +97,7 @@ module.exports = {
     canPaginate: true,
   },
   display: {
-    description: 'Triggers when a new project is created.',
+    description: 'Triggers when a new project is created in Projetly.',
     hidden: false,
     label: 'New Project Created',
   },

@@ -105,7 +105,7 @@ module.exports = {
     ],
   },
   display: {
-    description: 'Triggers when a existing contact updated.',
+    description: 'Triggers when a existing contact updated in Projetly.',
     hidden: false,
     label: 'Existing Contact Updated',
   },

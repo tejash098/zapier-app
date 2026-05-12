@@ -50,8 +50,6 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const results = response.json;
-    // You can do any parsing you need for results here before returning them
-
     return results;
   });
 };
@@ -99,6 +97,8 @@ const inputFields = async (z, bundle) => {
         label: 'Lead Status',
         type: 'string',
         choices: milestones,
+        helpText:
+          'Select the Default Lead Status of Company, If Want to add custom Click on three dot icon',
         required: false,
         altersDynamicFields: false,
       },
@@ -114,19 +114,19 @@ module.exports = {
         key: 'company_owner',
         label: 'Company Owner',
         type: 'string',
-        helpText: 'Select Default Company Owner',
+        helpText: 'Select the Default Company Owner from given Users List',
         dynamic: 'get_users.user_id.full_name',
-        required: false,
+        required: true,
         list: false,
         altersDynamicFields: false,
       },
       {
         key: 'company_pipeline_id',
-        label: 'Select Default Status Pipeline',
+        label: 'Select Default Lead Status Pipeline',
         type: 'string',
-        helpText: 'Select Default Status Pipeline.',
+        helpText: 'Select Default Lead Status Pipeline for Company Created.',
         dynamic: 'get_company_pipeline.org_temp_id.template_name',
-        required: false,
+        required: true,
         list: false,
         altersDynamicFields: true,
       },
@@ -182,15 +182,6 @@ module.exports = {
         type: 'string',
         dynamic: 'company_created.company_id.company_name',
         search: 'find_company.company_id',
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
-        key: 'parent_company',
-        label: 'Parent Company Name',
-        type: 'string',
-        helpText: 'Enter the Parent Company Name',
         required: false,
         list: false,
         altersDynamicFields: false,
@@ -360,7 +351,7 @@ module.exports = {
     ],
   },
   display: {
-    description: 'Creates a Company in Projetly.',
+    description: 'Creates a New Company in Projetly.',
     hidden: false,
     label: 'Create Company',
   },

@@ -33,8 +33,8 @@ const perform = async (z, bundle) => {
       filter: JSON.stringify(filter),
     },
     removeMissingValuesFrom: {
-      body: true,
-      params: true,
+      body: false,
+      params: false,
     },
   };
 

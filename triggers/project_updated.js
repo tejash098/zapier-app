@@ -97,7 +97,7 @@ module.exports = {
     canPaginate: true,
   },
   display: {
-    description: 'Triggers when a existing project is updated.',
+    description: 'Triggers when a existing project is updated in Projetly.',
     hidden: false,
     label: 'Existing Project Updated',
   },

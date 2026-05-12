@@ -130,7 +130,7 @@ module.exports = {
         type: 'string',
         helpText: 'Select Default Contact Owner from Dropdown.',
         dynamic: 'get_users.user_id.full_name',
-        required: false,
+        required: true,
         list: false,
         altersDynamicFields: false,
       },

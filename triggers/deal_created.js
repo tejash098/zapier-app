@@ -105,7 +105,7 @@ module.exports = {
     canPaginate: true,
   },
   display: {
-    description: 'Triggers when a new deal is created.',
+    description: 'Triggers when a new deal is created in Projetly.',
     hidden: false,
     label: 'New Deal Created',
   },

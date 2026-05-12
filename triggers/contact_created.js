@@ -100,7 +100,7 @@ module.exports = {
     canPaginate: false,
   },
   display: {
-    description: 'Triggers when a new contact is created.',
+    description: 'Triggers when a new contact is created in Projetly.',
     hidden: false,
     label: 'New Contact Created',
   },

@@ -94,7 +94,7 @@ module.exports = {
     ],
   },
   display: {
-    description: 'Triggers when a existing company is updated.',
+    description: 'Triggers when a existing company is updated in Projetly.',
     hidden: false,
     label: 'Existing Company Updated',
   },

@@ -107,7 +107,7 @@ module.exports = {
     canPaginate: true,
   },
   display: {
-    description: 'Triggers when a existing deal is updated.',
+    description: 'Triggers when a existing deal is updated in Projetly.',
     hidden: false,
     label: 'Existing Deal Updated',
   },
