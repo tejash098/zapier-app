@@ -160,7 +160,7 @@ module.exports = {
         key: 'contact_id',
         label: 'Customer / Contact Id',
         type: 'string',
-        dynamic: 'contact_created.contact_id.full_name',
+        dynamic: 'get_contact.contact_id.full_name',
         search: 'find_contact.contact_id',
         required: true,
         list: false,

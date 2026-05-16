@@ -45,6 +45,7 @@ module.exports = {
       { key: 'org_temp_id', label: 'Org Temp Id' },
       { key: 'template_name', label: 'Template Name' },
     ],
+    type: 'polling',
   },
   display: {
     description: 'Triggers when users select Specific Pipeline from Dropdown',

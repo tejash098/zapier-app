@@ -1,31 +1,5 @@
 const perform = async (z, bundle) => {
-  const options = {
-    url: `${process.env.NGROK_URL}/contact/`,
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-    params: {
-      limit: 20,
-      sort: '-creation_time',
-    },
-    removeMissingValuesFrom: {
-      body: true,
-      params: true,
-    },
-  };
-
-  return z.request(options).then((response) => {
-    const data = response.json;
-    const results = data.results || [];
-    // You can do any parsing you need for results here before returning them
-    results.sort((a, b) => {
-      const dateA = new Date(a.creation_time || 0);
-      const dateB = new Date(b.creation_time || 0);
-      return dateB - dateA;
-    });
-    return results;
-  });
+  return [bundle.cleanedRequest];
 };
 
 module.exports = {
@@ -98,6 +72,29 @@ module.exports = {
       { key: 'reports_to', label: 'Reports to' },
     ],
     canPaginate: false,
+    type: 'hook',
+    performSubscribe: {
+      body: {
+        target_url: '{{bundle.targetUrl}}',
+        events: '[contact_create]',
+        app_name: 'zapier',
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      url: '{{process.env.WEBHOOK_SUBSCRIBE}}',
+    },
+    performUnsubscribe: {
+      body: { target_url_id: '{{bundle.subscribeData.id}}' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'DELETE',
+      url: '{{process.env.WEBHOOK_UNSUBSCRIBE}}',
+    },
   },
   display: {
     description: 'Triggers when a new contact is created in Projetly.',

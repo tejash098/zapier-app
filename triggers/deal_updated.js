@@ -1,32 +1,5 @@
 const perform = async (z, bundle) => {
-  const options = {
-    url: `${process.env.NGROK_URL}/project/`,
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-    params: {
-      items_per_page: 10,
-      page: bundle.meta.page + 1,
-      project_type: 'deal',
-      sort: '-last_update_time',
-    },
-    removeMissingValuesFrom: {
-      body: true,
-      params: true,
-    },
-  };
-
-  return z.request(options).then((response) => {
-    const data = response.json;
-    const results = data.results.map((result) => ({
-      ...result,
-      id: result.project_id,
-    }));
-    // You can do any parsing you need for results here before returning them
-
-    return results;
-  });
+  return [bundle.cleanedRequest];
 };
 
 module.exports = {
@@ -105,6 +78,29 @@ module.exports = {
       { key: 'id', label: 'Id' },
     ],
     canPaginate: true,
+    type: 'hook',
+    performSubscribe: {
+      body: {
+        target_url: '{{bundle.targetUrl}}',
+        events: '[deal_update]',
+        app_name: 'zapier',
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      url: '{{process.env.WEBHOOK_SUBSCRIBE}}',
+    },
+    performUnsubscribe: {
+      body: { target_url_id: '{{bundle.subscribeData.id}}' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'DELETE',
+      url: '{{process.env.WEBHOOK_UNSUBSCRIBE}}',
+    },
   },
   display: {
     description: 'Triggers when a existing deal is updated in Projetly.',

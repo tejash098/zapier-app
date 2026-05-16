@@ -234,7 +234,7 @@ module.exports = {
         label: 'Account / Company Id',
         type: 'string',
         helpText: 'Enter the Account Id from above step',
-        dynamic: 'company_created.company_id.company_name',
+        dynamic: 'get_company.company_id.company_name',
         search: 'find_company.company_id',
         required: true,
         list: false,
@@ -246,7 +246,7 @@ module.exports = {
         type: 'string',
         helpText:
           'Select the Existing Contact Id, If Not present add search step to create',
-        dynamic: 'contact_created.contact_id.full_name',
+        dynamic: 'get_contact.contact_id.full_name',
         search: 'find_contact.contact_id',
         required: true,
         list: false,

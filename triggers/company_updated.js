@@ -1,37 +1,5 @@
 const perform = async (z, bundle) => {
-  const options = {
-    url: `${process.env.NGROK_URL}/company/`,
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-    params: {
-      limit: 20,
-      sort: '-last_update_time',
-    },
-    removeMissingValuesFrom: {
-      body: true,
-      params: true,
-    },
-  };
-
-  return z.request(options).then((response) => {
-    const data = response.json;
-    const results = data.results
-      .map((result) => ({
-        ...result,
-        originalId: result.id,
-        id: result.id + '-' + result.last_update_time,
-      }))
-      .sort(
-        (a, b) =>
-          new Date(b.last_update_time || 0) - new Date(a.last_update_time || 0),
-      );
-
-    // You can do any parsing you need for results here before returning them
-
-    return results;
-  });
+  return [bundle.cleanedRequest];
 };
 
 module.exports = {
@@ -92,6 +60,29 @@ module.exports = {
       { key: 'last_update_time', label: 'Last Update Time', type: 'datetime' },
       { key: 'record_source', label: 'Record Source' },
     ],
+    type: 'hook',
+    performSubscribe: {
+      body: {
+        target_url: '{{bundle.targetUrl}}',
+        events: '[company_update]',
+        app_name: 'zapier',
+      },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'POST',
+      url: '{{process.env.WEBHOOK_SUBSCRIBE}}',
+    },
+    performUnsubscribe: {
+      body: { target_url_id: '{{bundle.subscribeData.id}}' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      method: 'DELETE',
+      url: '{{process.env.WEBHOOK_UNSUBSCRIBE}}',
+    },
   },
   display: {
     description: 'Triggers when a existing company is updated in Projetly.',

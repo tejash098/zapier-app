@@ -14,6 +14,8 @@ const getCompanyPipelineTrigger = require('./triggers/get_company_pipeline.js');
 const getContactPipelineTrigger = require('./triggers/get_contact_pipeline.js');
 const getProjectTemplateTrigger = require('./triggers/get_project_template.js');
 const getUsersTrigger = require('./triggers/get_users.js');
+const getCompanyTrigger = require('./triggers/get_company.js');
+const getContactTrigger = require('./triggers/get_contact.js');
 const createCompanyCreate = require('./creates/create_company.js');
 const createContactCreate = require('./creates/create_contact.js');
 const createDealCreate = require('./creates/create_deal.js');
@@ -45,6 +47,8 @@ module.exports = {
     [getContactPipelineTrigger.key]: getContactPipelineTrigger,
     [getProjectTemplateTrigger.key]: getProjectTemplateTrigger,
     [getUsersTrigger.key]: getUsersTrigger,
+    [getCompanyTrigger.key]: getCompanyTrigger,
+    [getContactTrigger.key]: getContactTrigger,
   },
   searches: {
     [findProjectSearch.key]: findProjectSearch,
