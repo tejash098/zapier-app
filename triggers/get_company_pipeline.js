@@ -25,8 +25,6 @@ const perform = async (z, bundle) => {
       org_temp_id: result.org_temp_id,
       template_name: result.template_name,
     }));
-    // You can do any parsing you need for results here before returning them
-
     return results;
   });
 };

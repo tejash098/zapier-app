@@ -1,4 +1,25 @@
 const authentication = require('./authentication');
+
+const createSignature = (request, z, bundle) => {
+  const crypto = z.require('crypto');
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+
+  let bodyStr = '';
+  if (request.body) {
+    bodyStr = typeof request.body === 'string'
+      ? request.body
+      : JSON.stringify(request.body);
+  }
+
+  const signature = crypto
+    .createHmac('sha256', process.env.CLIENT_SECRET)
+    .update(`${timestamp}${bodyStr}`)
+    .digest('hex');
+
+  request.headers['X-Zapier-Timestamp'] = timestamp;
+  request.headers['X-Zapier-Signature'] = signature;
+  return request;
+};
 const projectCreatedTrigger = require('./triggers/project_created.js');
 const companyCreatedTrigger = require('./triggers/company_created.js');
 const contactCreatedTrigger = require('./triggers/contact_created.js');
@@ -28,6 +49,7 @@ const findDealSearch = require('./searches/find_deal.js');
 module.exports = {
   version: require('./package.json').version,
   platformVersion: require('zapier-platform-core').version,
+  beforeRequest: [createSignature],
   requestTemplate: {
     headers: { Authorization: 'Bearer {{bundle.authData.access_token}}' },
   },
