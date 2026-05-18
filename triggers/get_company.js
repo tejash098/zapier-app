@@ -1,80 +1,63 @@
 const perform = async (z, bundle) => {
-  let cursor = null;
+  let cursor;
 
-  function fetchCompanies(cursorValue) {
-    const options = {
-      url: `${process.env.NGROK_URL}/company/`,
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
-      params: {
-        limit: '2',
-        sort: '-creation_time',
-        next_cursor: cursorValue,
-      },
-      removeMissingValuesFrom: {
-        params: true,
-      },
-    };
-
-    return z.request(options).then((response) => {
-      const data = response.json || {};
-
-      const results = (data.results || []).map((item) => ({
-        id: item.id,
-        company_id: item.company_id,
-        company_name: item.company_name,
-      }));
-
-      // No next page
-      if (!data.has_next || !data.next_cursor) {
-        return z.cursor.set('').then(() => results);
-      }
-
-      // Save next cursor
-      return z.cursor.set(data.next_cursor).then(() => results);
-    });
-  }
-
-  // First page
-  if (bundle.meta.page === 0) {
-    return fetchCompanies(null);
-  }
-
-  // Next pages
-  return z.cursor.get().then((savedCursor) => {
-    // Stop pagination
-    if (!savedCursor) {
+  // First page is 0; only fetch a stored cursor for subsequent pages
+  if (bundle.meta.page > 0) {
+    cursor = await z.cursor.get();
+    if (!cursor) {
       return [];
     }
+  }
 
-    cursor = savedCursor;
+  const options = {
+    url: `${process.env.NGROK_URL}/company/`,
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+    },
+    params: {
+      limit: "20",
+      sort: "-creation_time",
+      next_cursor: cursor,
+    },
+    removeMissingValuesFrom: {
+      params: true,
+    },
+  };
 
-    return fetchCompanies(cursor);
-  });
+  const response = await z.request(options);
+  
+  // Store the cursor if it exists for pagination
+  if (response.json.next_cursor) {
+    await z.cursor.set(response.json.next_cursor);
+  }
+
+  const results = response.json.results || [];
+  
+  return results;
 };
+
 
 module.exports = {
   operation: {
     perform: perform,
     canPaginate: true,
     sample: {
-      id: '7459953420019961857',
-      company_id: '7459953420019961857',
-      company_name: 'TEST ACCOUNT FOR CUSTOM FIELD',
+      id: "7459953420019961857",
+      company_id: "7459953420019961857",
+      company_name: "TEST COMPANY",
     },
     outputFields: [
-      { key: 'id', label: 'Id' },
-      { key: 'company_id', label: 'Company Id' },
-      { key: 'company_name', label: 'Company Name' },
+      { key: "id", label: "Id" },
+      { key: "company_id", label: "Company Id" },
+      { key: "company_name", label: "Company Name" },
     ],
   },
   display: {
-    description: 'Triggers when users select company from Dropdown',
+    description: "Triggers when users select company from Dropdown",
     hidden: true,
-    label: 'Get Company',
+    label: "Get Company",
   },
-  key: 'get_company',
-  noun: 'Company',
+  key: "get_company",
+  noun: "Company",
 };
