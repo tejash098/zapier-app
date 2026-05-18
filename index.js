@@ -17,6 +17,13 @@ const createSignature = (request, z, bundle) => {
   return request;
 };
 
+const handleHTTPError = (response, z) => {
+  if (response.status === 401) {
+    throw new z.errors.RefreshAuthError("Access token expired, triggering refresh.");
+  }
+  return response;
+};
+
 const projectCreatedTrigger = require("./triggers/project_created.js");
 const companyCreatedTrigger = require("./triggers/company_created.js");
 const contactCreatedTrigger = require("./triggers/contact_created.js");
@@ -47,6 +54,7 @@ module.exports = {
   version: require("./package.json").version,
   platformVersion: require("zapier-platform-core").version,
   beforeRequest: [createSignature],
+  afterResponse: [handleHTTPError],
   requestTemplate: {
     headers: { Authorization: "Bearer {{bundle.authData.access_token}}" },
   },

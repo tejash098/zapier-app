@@ -1,4 +1,31 @@
+const resolveOwner = async (z, bundle, ownerKey) => {
+  const { owner_email, owner_name } = bundle.inputData;
+  const ownerId = bundle.inputData[ownerKey];
+
+  const res = await z.request({
+    url: `${process.env.NGROK_URL}/users/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
+  const users = Array.isArray(res.json) ? res.json : [];
+
+  if (owner_email) {
+    const found = users.find((u) => u.email === owner_email);
+    if (found?.user_id) return found;
+  }
+
+  if (owner_name) {
+    const found = users.find((u) => u.full_name === owner_name);
+    if (found?.user_id) return found;
+  }
+
+  return users.find((u) => u.user_id === ownerId) || {};
+};
+
 const perform = async (z, bundle) => {
+  const ownerData = await resolveOwner(z, bundle, "company_owner");
+  const resolvedOwner = ownerData.user_id || bundle.inputData.company_owner;
+
   const options = {
     url: `${process.env.NGROK_URL}/company/`,
     method: "POST",
@@ -19,7 +46,7 @@ const perform = async (z, bundle) => {
           s.toUpperCase(),
         ),
       },
-      lead_status_pipeline_id: bundle.inputData.lead_status_pipeline_id,
+      lead_status_pipeline_id: bundle.inputData.company_pipeline_id,
       parent_company: bundle.inputData.parent_company,
       parent_company_id: bundle.inputData.parent_company_id,
       operating_regions: bundle.inputData.operating_regions
@@ -27,7 +54,7 @@ const perform = async (z, bundle) => {
         : [],
       category: bundle.inputData.category,
       industry: bundle.inputData.industry,
-      company_owner: bundle.inputData.company_owner,
+      company_owner: resolvedOwner ? { user_id: resolvedOwner } : undefined,
       customer_segment: bundle.inputData.customer_segment,
       icp_fit: bundle.inputData.icp_fit,
       company_type: bundle.inputData.company_type,
@@ -116,9 +143,30 @@ module.exports = {
         key: "company_owner",
         label: "Company Owner",
         type: "string",
-        helpText: "Select the Default Company Owner from given Users List",
+        helpText:
+          "Select the Default Company Owner from given Users List. Optionally provide Owner Email or Name below to auto-map; if not found, this selection is used.",
         dynamic: "get_users.user_id.full_name",
         required: true,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "owner_email",
+        label: "Owner Email (optional)",
+        type: "string",
+        helpText:
+          "Enter owner email to auto-map from Projetly user list. If not found, the selected Company Owner will be used.",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "owner_name",
+        label: "Owner Name (optional)",
+        type: "string",
+        helpText:
+          "Enter owner full name to auto-map. Used as fallback if email lookup fails.",
+        required: false,
         list: false,
         altersDynamicFields: false,
       },

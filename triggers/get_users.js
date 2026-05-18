@@ -6,9 +6,6 @@ const perform = async (z, bundle) => {
       Accept: 'application/json',
     },
     params: {
-      page: bundle.meta.page + 1,
-      items_per_page: 20,
-      module: 'users',
     },
     removeMissingValuesFrom: {
       body: true,
@@ -17,16 +14,11 @@ const perform = async (z, bundle) => {
   };
 
   return z.request(options).then((response) => {
-    const data = response.json;
-    const results = data.results.map((result) => ({
+    const results = response.json.map((result)=>({
       id: result.user_id,
       user_id: result.user_id,
-      full_name: result.full_name,
-      email: result.email,
-      profile_id: result.profile_id,
-    }));
-    // You can do any parsing you need for results here before returning them
-
+      full_name: result.full_name
+    }))
     return results;
   });
 };
@@ -38,9 +30,7 @@ module.exports = {
     sample: {
       id: '7424309824034181121',
       user_id: '7424309824034181121',
-      full_name: 'Tejash kumar singh',
-      email: 'F7NMCRTv7q5Ipu3YUHeOKyQJ5pbQVimu/EfbAf5BlOk=',
-      profile_id: '7424309828828270593',
+      full_name: 'Tejash kumar singh'
     },
     outputFields: [
       { key: 'id', label: 'Id' },

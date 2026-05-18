@@ -1,4 +1,31 @@
+const resolveOwner = async (z, bundle, ownerKey) => {
+  const { owner_email, owner_name } = bundle.inputData;
+  const ownerId = bundle.inputData[ownerKey];
+
+  const res = await z.request({
+    url: `${process.env.NGROK_URL}/users/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
+  const users = Array.isArray(res.json) ? res.json : [];
+
+  if (owner_email) {
+    const found = users.find((u) => u.email === owner_email);
+    if (found?.user_id) return found;
+  }
+
+  if (owner_name) {
+    const found = users.find((u) => u.full_name === owner_name);
+    if (found?.user_id) return found;
+  }
+
+  return users.find((u) => u.user_id === ownerId) || {};
+};
+
 const perform = async (z, bundle) => {
+  const ownerData = await resolveOwner(z, bundle, "contact_owner");
+  const resolvedOwner = ownerData.user_id || bundle.inputData.contact_owner;
+
   const options = {
     url: `${process.env.NGROK_URL}/contact/`,
     method: "POST",
@@ -38,7 +65,7 @@ const perform = async (z, bundle) => {
       department: bundle.inputData.department,
       lead_status: bundle.inputData.lead_status,
       lead_status_pipeline_id: bundle.inputData.lead_status_pipeline_id,
-      contact_owner: bundle.inputData.contact_owner,
+      contact_owner: resolvedOwner ? { user_id: resolvedOwner } : undefined,
       language: bundle.inputData.language,
       campaign: bundle.inputData.campaign,
       internal_notes: bundle.inputData.internal_notes,
@@ -132,9 +159,30 @@ module.exports = {
         key: "contact_owner",
         label: "Contact Owner",
         type: "string",
-        helpText: "Select Default Contact Owner from Dropdown.",
+        helpText:
+          "Select Default Contact Owner from Dropdown. Optionally provide Owner Email or Name below to auto-map; if not found, this selection is used.",
         dynamic: "get_users.user_id.full_name",
         required: true,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "owner_email",
+        label: "Owner Email (optional)",
+        type: "string",
+        helpText:
+          "Enter owner email to auto-map from Projetly user list. If not found, the selected Contact Owner will be used.",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "owner_name",
+        label: "Owner Name (optional)",
+        type: "string",
+        helpText:
+          "Enter owner full name to auto-map. Used as fallback if email lookup fails.",
+        required: false,
         list: false,
         altersDynamicFields: false,
       },
