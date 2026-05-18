@@ -102,9 +102,6 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const results = response.json;
-
-    // You can do any parsing you need for results here before returning them
-
     return results;
   });
 };
