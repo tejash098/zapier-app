@@ -7,7 +7,7 @@ const authorizeUrl = async (z, bundle) => {
   const state = bundle.inputData.state;
   const redirectUri = bundle.inputData.redirect_uri;
 
-  const payload = `${clientId}:${state}:${redirectUri}:${timestamp}`;
+  const payload = `${clientId}:${timestamp}`;
 
   const signature = crypto
     .createHmac("sha256", clientSecret)
