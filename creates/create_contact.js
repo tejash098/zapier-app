@@ -10,12 +10,16 @@ const resolveOwner = async (z, bundle, ownerKey) => {
   const users = Array.isArray(res.json) ? res.json : [];
 
   if (owner_email) {
-    const found = users.find((u) => u.email === owner_email);
+    const found = users.find(
+      (u) => u.email?.toLowerCase() === owner_email.toLowerCase(),
+    );
     if (found?.user_id) return found;
   }
 
   if (owner_name) {
-    const found = users.find((u) => u.full_name === owner_name);
+    const found = users.find(
+      (u) => u.full_name?.toLowerCase() === owner_name.toLowerCase(),
+    );
     if (found?.user_id) return found;
   }
 
@@ -65,7 +69,7 @@ const perform = async (z, bundle) => {
       department: bundle.inputData.department,
       lead_status: bundle.inputData.lead_status,
       lead_status_pipeline_id: bundle.inputData.lead_status_pipeline_id,
-      contact_owner: resolvedOwner ? { user_id: resolvedOwner } : undefined,
+      contact_owner: resolvedOwner,
       language: bundle.inputData.language,
       campaign: bundle.inputData.campaign,
       internal_notes: bundle.inputData.internal_notes,

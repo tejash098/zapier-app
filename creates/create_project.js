@@ -10,12 +10,16 @@ const resolveOwner = async (z, bundle, ownerKey) => {
   const users = Array.isArray(res.json) ? res.json : [];
 
   if (owner_email) {
-    const found = users.find((u) => u.email === owner_email);
+    const found = users.find(
+      (u) => u.email?.toLowerCase() === owner_email.toLowerCase(),
+    );
     if (found?.user_id) return found;
   }
 
   if (owner_name) {
-    const found = users.find((u) => u.full_name === owner_name);
+    const found = users.find(
+      (u) => u.full_name?.toLowerCase() === owner_name.toLowerCase(),
+    );
     if (found?.user_id) return found;
   }
 

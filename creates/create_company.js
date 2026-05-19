@@ -10,12 +10,16 @@ const resolveOwner = async (z, bundle, ownerKey) => {
   const users = Array.isArray(res.json) ? res.json : [];
 
   if (owner_email) {
-    const found = users.find((u) => u.email === owner_email);
+    const found = users.find(
+      (u) => u.email?.toLowerCase() === owner_email.toLowerCase(),
+    );
     if (found?.user_id) return found;
   }
 
   if (owner_name) {
-    const found = users.find((u) => u.full_name === owner_name);
+    const found = users.find(
+      (u) => u.full_name?.toLowerCase() === owner_name.toLowerCase(),
+    );
     if (found?.user_id) return found;
   }
 
@@ -54,7 +58,7 @@ const perform = async (z, bundle) => {
         : [],
       category: bundle.inputData.category,
       industry: bundle.inputData.industry,
-      company_owner: resolvedOwner ? { user_id: resolvedOwner } : undefined,
+      company_owner: resolvedOwner,
       customer_segment: bundle.inputData.customer_segment,
       icp_fit: bundle.inputData.icp_fit,
       company_type: bundle.inputData.company_type,
