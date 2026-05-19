@@ -41,11 +41,16 @@ const getProjectTemplateTrigger = require("./triggers/get_project_template.js");
 const getUsersTrigger = require("./triggers/get_users.js");
 const getCompanyTrigger = require("./triggers/get_company.js");
 const getContactTrigger = require("./triggers/get_contact.js");
+const taskCreatedTrigger = require("./triggers/task_created.js");
+const taskUpdatedTrigger = require("./triggers/task_updated.js");
+const getProjectsTrigger = require("./triggers/get_projects.js");
 const createCompanyCreate = require("./creates/create_company.js");
 const createContactCreate = require("./creates/create_contact.js");
 const createDealCreate = require("./creates/create_deal.js");
 const createProjectCreate = require("./creates/create_project.js");
+const createTaskCreate = require("./creates/create_task.js");
 const findProjectSearch = require("./searches/find_project.js");
+const findTaskSearch = require("./searches/find_task.js");
 const findCompanySearch = require("./searches/find_company.js");
 const findContactSearch = require("./searches/find_contact.js");
 const findDealSearch = require("./searches/find_deal.js");
@@ -76,18 +81,23 @@ module.exports = {
     [getUsersTrigger.key]: getUsersTrigger,
     [getCompanyTrigger.key]: getCompanyTrigger,
     [getContactTrigger.key]: getContactTrigger,
+    [taskCreatedTrigger.key]: taskCreatedTrigger,
+    [taskUpdatedTrigger.key]: taskUpdatedTrigger,
+    [getProjectsTrigger.key]: getProjectsTrigger,
   },
   searches: {
     [findProjectSearch.key]: findProjectSearch,
     [findCompanySearch.key]: findCompanySearch,
     [findContactSearch.key]: findContactSearch,
     [findDealSearch.key]: findDealSearch,
+    [findTaskSearch.key]: findTaskSearch,
   },
   creates: {
     [createCompanyCreate.key]: createCompanyCreate,
     [createContactCreate.key]: createContactCreate,
     [createDealCreate.key]: createDealCreate,
     [createProjectCreate.key]: createProjectCreate,
+    [createTaskCreate.key]: createTaskCreate,
   },
   searchOrCreates: {
     find_company: {
@@ -125,6 +135,15 @@ module.exports = {
       },
       key: "find_project",
       search: "find_project",
+    },
+    find_task: {
+      create: "create_task",
+      display: {
+        description: "Finds a Task, or creates one if not found.",
+        label: "Find or Create Task",
+      },
+      key: "find_task",
+      search: "find_task",
     },
   },
   authentication: authentication,
