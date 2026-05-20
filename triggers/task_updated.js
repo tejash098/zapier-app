@@ -2,9 +2,16 @@ const perform = async (z, bundle) => {
   return [bundle.cleanedRequest];
 };
 
+// No flat /task/ list endpoint in the API; sample fetch returns empty.
+// Webhook payload still drives real-time runs.
+const performList = async (z, bundle) => {
+  return [];
+};
+
 module.exports = {
   operation: {
     perform: perform,
+    performList: performList,
     sample: {
       item_id: "7462387195194642433",
       display_id: "TSK603",

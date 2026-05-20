@@ -2,9 +2,26 @@ const perform = async (z, bundle) => {
   return [bundle.cleanedRequest];
 };
 
+const performList = async (z, bundle) => {
+  const options = {
+    url: `${process.env.NGROK_URL}/company/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    params: {
+      limit: 20,
+      sort: "-creation_time",
+    },
+    removeMissingValuesFrom: { params: true },
+  };
+
+  const response = await z.request(options);
+  return response.json.results || [];
+};
+
 module.exports = {
   operation: {
     perform: perform,
+    performList: performList,
     sample: {
       id: "7454851902669328385",
       company_id: "7454851902669328385",

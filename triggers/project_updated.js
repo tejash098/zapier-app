@@ -2,9 +2,27 @@ const perform = async (z, bundle) => {
   return [bundle.cleanedRequest];
 };
 
+const performList = async (z, bundle) => {
+  const options = {
+    url: `${process.env.NGROK_URL}/project/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    params: {
+      module: "projects",
+      project_type: "project",
+      items_per_page: 20,
+      sort: "-last_update_time",
+    },
+    removeMissingValuesFrom: { params: true },
+  };
+  const response = await z.request(options);
+  return response.json.results || [];
+};
+
 module.exports = {
   operation: {
     perform: perform,
+    performList: performList,
     sample: {
       project_id: "7442427864764387329",
       project_name: "Projetly",

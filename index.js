@@ -147,5 +147,9 @@ module.exports = {
     },
   },
   authentication: authentication,
-  flags: { skipHttpPatch: false, skipThrowForStatus: true },
+  flags: {
+    skipHttpPatch: false,
+    skipThrowForStatus: true,
+    cleanInputData: false,
+  },
 };
