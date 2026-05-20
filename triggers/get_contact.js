@@ -28,7 +28,7 @@ const perform = async (z, bundle) => {
   const response = await z.request(options);
 
   // Store the cursor if it exists for pagination
-  if (response.json.next_cursor) {
+  if (response.json && response.json.next_cursor) {
     await z.cursor.set(response.json.next_cursor);
   }
 

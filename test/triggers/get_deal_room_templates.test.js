@@ -1,20 +1,34 @@
-const zapier = require('zapier-platform-core');
+const zapier = require("zapier-platform-core");
 
-// Use this to make test calls into your app:
-const App = require('../../index');
+const App = require("../../index");
 const appTester = zapier.createAppTester(App);
-// read the `.env` file into the environment, if available
 zapier.tools.env.inject();
 
-describe('triggers.get_deal_room_templates', () => {
-  it('should run', async () => {
-    const bundle = { inputData: {} };
+describe("triggers.get_deal_room_templates", () => {
+  it("should handle pagination correctly across page 0 and page 1", async () => {
+    const authData = {
+      access_token: process.env.authData_access_token,
+      refresh_token: process.env.authData_refresh_token,
+    };
 
-    const results = await appTester(
-      App.triggers['get_deal_room_templates'].operation.perform,
-      bundle,
+    // --- Request Page 0 ---
+    const bundlePage0 = { inputData: {}, meta: { page: 0 }, authData };
+    const resultsPage0 = await appTester(
+      App.triggers["get_deal_room_templates"].operation.perform,
+      bundlePage0,
     );
-    expect(results).toBeDefined();
-    // TODO: add more assertions
+
+    expect(resultsPage0).toBeDefined();
+    expect(Array.isArray(resultsPage0)).toBe(true);
+
+    // --- Request Page 1 ---
+    const bundlePage1 = { inputData: {}, meta: { page: 1 }, authData };
+    const resultsPage1 = await appTester(
+      App.triggers["get_deal_room_templates"].operation.perform,
+      bundlePage1,
+    );
+
+    expect(resultsPage1).toBeDefined();
+    expect(Array.isArray(resultsPage1)).toBe(true);
   });
 });

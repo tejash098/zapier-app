@@ -63,6 +63,14 @@ const perform = async (z, bundle) => {
       item_type: 1,
       item_type_key: "task",
       users: [userDict],
+      checklist_items: (bundle.inputData.checklist_items || []).map((item) => ({
+        item: item,
+        is_checked: false,
+      })),
+      tags: (bundle.inputData.tags || []).map((tag) => ({
+        tag_name: tag,
+        is_new: true,
+      })),
     },
     removeMissingValuesFrom: { body: true },
   };
@@ -159,7 +167,8 @@ const assignUserFields = async (z, bundle) => {
       required: true,
       list: false,
       altersDynamicFields: false,
-      helpText: "Select the user to assign this task will be used when no user found by name or email.",
+      helpText:
+        "Select the user to assign this task will be used when no user found by name or email.",
       choices: users.map((u) => ({ value: u.user_id, label: u.full_name })),
     },
   ];
@@ -206,6 +215,22 @@ module.exports = {
         list: false,
         altersDynamicFields: false,
         helpText: "Enter the due date of the task.",
+      },
+      {
+        key: "checklist_items",
+        label: "Checklist Items",
+        type: "string",
+        required: false,
+        list: true,
+        helpText: "Add items for the task checklist.",
+      },
+      {
+        key: "tags",
+        label: "Tags",
+        type: "string",
+        required: false,
+        list: true,
+        helpText: "Add tags for the task.",
       },
       assignUserFields,
     ],

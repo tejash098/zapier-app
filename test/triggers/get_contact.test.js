@@ -17,9 +17,9 @@ describe("triggers.get_contact", () => {
     const bundlePage0 = { inputData: {}, meta: { page: 0 }, authData };
     const resultsPage0 = await appTester(
       App.triggers["get_contact"].operation.perform,
-      bundlePage0,
+      bundlePage0
     );
-
+    // Verify Page 0 results
     expect(resultsPage0).toBeDefined();
     expect(Array.isArray(resultsPage0)).toBe(true);
 
@@ -30,6 +30,7 @@ describe("triggers.get_contact", () => {
       bundlePage1,
     );
 
+    // Verify Page 1 results
     expect(resultsPage1).toBeDefined();
     expect(Array.isArray(resultsPage1)).toBe(true);
   });

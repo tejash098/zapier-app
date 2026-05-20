@@ -6,6 +6,8 @@ const perform = async (z, bundle) => {
       Accept: 'application/json',
     },
     params: {
+      'items_per_page': 20,
+      'page': bundle.meta.page + 1
     },
     removeMissingValuesFrom: {
       body: true,

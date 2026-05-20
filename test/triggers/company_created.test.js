@@ -31,7 +31,6 @@ describe("triggers.company_created", () => {
       App.triggers["company_created"].operation.performSubscribe,
       bundle,
     );
-    console.log("Subcribe response", result);
     expect(result.id).toBeDefined();
   });
 
