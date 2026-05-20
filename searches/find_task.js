@@ -22,15 +22,13 @@ const perform = async (z, bundle) => {
   ];
 
   const options = {
-    url: `${process.env.NGROK_URL}/task/`,
+    url: `${process.env.NGROK_URL}/project/`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
     params: {
-      items_per_page: 50,
-      page: bundle.meta.page + 1,
       project_id: bundle.inputData.project_id,
       filter: JSON.stringify(filter),
     },
@@ -38,8 +36,8 @@ const perform = async (z, bundle) => {
   };
 
   return z.request(options).then((response) => {
-    const data = response.json;
-    return data.results || [];
+    const milestones = response.json.milestones || [];
+    return milestones.flatMap((m) => m.tasks || []);
   });
 };
 

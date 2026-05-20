@@ -1,4 +1,43 @@
+const resolveUser = async (z, bundle, userKey) => {
+  const { user_email, user_name } = bundle.inputData;
+  const userId = bundle.inputData[userKey];
+
+  const res = await z.request({
+    url: `${process.env.NGROK_URL}/users/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+  });
+  const users = Array.isArray(res.json) ? res.json : [];
+
+  if (user_email) {
+    const found = users.find(
+      (u) => u.email?.toLowerCase() === user_email.toLowerCase(),
+    );
+    if (found?.user_id) return found;
+  }
+
+  if (user_name) {
+    const found = users.find(
+      (u) => u.full_name?.toLowerCase() === user_name.toLowerCase(),
+    );
+    if (found?.user_id) return found;
+  }
+
+  return users.find((u) => u.user_id === userId) || {};
+};
+
 const perform = async (z, bundle) => {
+  const userData = await resolveUser(z, bundle, "default_assigned_user");
+  const userDict = {
+    user_id: userData.user_id || null,
+    full_name: userData.full_name || null,
+    profile_image: userData.image || null,
+    email: userData.email || null,
+    role: userData.role?.role_name || null,
+    phone_number: userData.phone?.number || null,
+    is_customer: false,
+  };
+
   const options = {
     url: `${process.env.NGROK_URL}/task/`,
     method: "POST",
@@ -16,11 +55,14 @@ const perform = async (z, bundle) => {
         : undefined,
       status_key: bundle.inputData.status_key,
       status: {
-        "status_key": bundle.inputData.status_key,
-        "status_name": bundle.inputData.status_key.toUpperCase().replace("_", " "),
+        status_key: bundle.inputData.status_key,
+        status_name: bundle.inputData.status_key
+          .toUpperCase()
+          .replace("_", " "),
       },
       item_type: 1,
       item_type_key: "task",
+      users: [userDict],
     },
     removeMissingValuesFrom: { body: true },
   };
@@ -33,7 +75,7 @@ const milestoneAndStatusFields = async (z, bundle) => {
   if (!projectId) return [];
 
   const projectRes = await z.request({
-    url: `${process.env.NGROK_URL}/project/`,
+    url: `${process.env.NGROK_URL}/project/${projectId}/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { project_id: projectId },
@@ -66,7 +108,59 @@ const milestoneAndStatusFields = async (z, bundle) => {
       default: "not_started",
       list: false,
       altersDynamicFields: false,
-      choices: statuses.map((s) => ({ value: s.status_key, label: s.status_name })),
+      choices: statuses.map((s) => ({
+        value: s.status_key,
+        label: s.status_name,
+      })),
+    },
+  ];
+};
+
+const assignUserFields = async (z, bundle) => {
+  const staticFields = [
+    {
+      key: "user_name",
+      label: "Assigned User Name",
+      type: "string",
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+      helpText: "Optional: name of the user to assign.",
+    },
+    {
+      key: "user_email",
+      label: "Assigned User Email",
+      type: "string",
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+      helpText: "Optional: email of the user to assign.",
+    },
+  ];
+
+  const projectId = bundle.inputData.project_id;
+  if (!projectId) return staticFields;
+
+  const res = await z.request({
+    url: `${process.env.NGROK_URL}/task/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    params: { users: "users", project_id: projectId },
+  });
+
+  const users = res.json || [];
+
+  return [
+    ...staticFields,
+    {
+      key: "default_assigned_user",
+      label: "Default Assigned User",
+      type: "string",
+      required: true,
+      list: false,
+      altersDynamicFields: false,
+      helpText: "Select the user to assign this task will be used when no user found by name or email.",
+      choices: users.map((u) => ({ value: u.user_id, label: u.full_name })),
     },
   ];
 };
@@ -113,6 +207,7 @@ module.exports = {
         altersDynamicFields: false,
         helpText: "Enter the due date of the task.",
       },
+      assignUserFields,
     ],
     sample: {
       status: "success",

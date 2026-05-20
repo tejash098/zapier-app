@@ -82,7 +82,7 @@ module.exports = {
     performSubscribe: {
       body: {
         target_url: "{{bundle.targetUrl}}",
-        events: "[deal_update]",
+        events: "[deal_updated]",
         app_name: "zapier",
       },
       headers: {
