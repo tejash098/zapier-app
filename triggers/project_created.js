@@ -89,7 +89,7 @@ module.exports = {
         Accept: "application/json",
       },
       method: "DELETE",
-      url: "{{process.env.WEBHOOK_UNSUBSCRIBE",
+      url: "{{process.env.WEBHOOK_UNSUBSCRIBE}}",
     },
   },
   display: {
