@@ -74,7 +74,9 @@ const refreshAccessToken = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     if (response.status === 400 || response.status === 401) {
-      throw new z.errors.RefreshAuthError("Token expired. Please reconnect your account.");
+      throw new z.errors.RefreshAuthError(
+        "Token expired. Please reconnect your account.",
+      );
     }
 
     const data = response.json;
