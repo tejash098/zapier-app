@@ -1,10 +1,15 @@
-const getUsersTrigger = require("../triggers/get_users");
-
 const resolveUser = async (z, bundle, userKey) => {
-  const { user_email, user_name } = bundle.inputData;
+  const { user_email, user_name, project_id } = bundle.inputData;
   const userId = bundle.inputData[userKey];
 
-  const users = await getUsersTrigger.operation.perform(z, bundle);
+  const res = await z.request({
+    url: `${process.env.NGROK_URL}/task/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    params: { users: "users", project_id: project_id },
+  });
+
+  const users = res.json || [];
 
   if (user_email) {
     const found = users.find(
@@ -28,12 +33,29 @@ const perform = async (z, bundle) => {
   const userDict = {
     user_id: userData.user_id || null,
     full_name: userData.full_name || null,
-    profile_image: userData.image || null,
     email: userData.email || null,
     role: userData.role?.role_name || null,
     phone_number: userData.phone?.number || null,
     is_customer: false,
   };
+
+  let statusObj;
+  let statusKeyStr;
+  if (bundle.inputData.status_key) {
+    try {
+      statusObj = JSON.parse(bundle.inputData.status_key);
+      statusKeyStr = statusObj.status_key;
+    } catch (e) {
+      statusKeyStr = bundle.inputData.status_key;
+      statusObj = {
+        status_key: statusKeyStr,
+        status_name: statusKeyStr
+          .split("_")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" "),
+      };
+    }
+  }
 
   const options = {
     url: `${process.env.NGROK_URL}/task/`,
@@ -50,13 +72,7 @@ const perform = async (z, bundle) => {
       due_date: bundle.inputData.due_date
         ? bundle.inputData.due_date.slice(0, 10)
         : undefined,
-      status_key: bundle.inputData.status_key,
-      status: {
-        status_key: bundle.inputData.status_key,
-        status_name: bundle.inputData.status_key
-          .toUpperCase()
-          .replace("_", " "),
-      },
+      status: statusObj,
       item_type: 1,
       item_type_key: "task",
       users: [userDict],
@@ -80,7 +96,7 @@ const milestoneAndStatusFields = async (z, bundle) => {
   if (!projectId) return [];
 
   const projectRes = await z.request({
-    url: `${process.env.NGROK_URL}/project/${projectId}/`,
+    url: `${process.env.NGROK_URL}/project/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { project_id: projectId },
@@ -114,7 +130,7 @@ const milestoneAndStatusFields = async (z, bundle) => {
       list: false,
       altersDynamicFields: false,
       choices: statuses.map((s) => ({
-        value: s.status_key,
+        value: JSON.stringify(s),
         label: s.status_name,
       })),
     },

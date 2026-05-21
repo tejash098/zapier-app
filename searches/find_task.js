@@ -31,6 +31,7 @@ const perform = async (z, bundle) => {
     params: {
       project_id: bundle.inputData.project_id,
       filter: JSON.stringify(filter),
+      task_filter: true
     },
     removeMissingValuesFrom: { body: false, params: false },
   };
@@ -140,7 +141,7 @@ module.exports = {
       },
       inputFields,
     ],
-    canPaginate: true,
+    canPaginate: false,
     sample: {
       item_id: "7462387195194642433",
       display_id: "TSK603",
