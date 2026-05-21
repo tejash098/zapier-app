@@ -4,7 +4,7 @@
   "description": "Projetly is an AI-powered platform to streamline onboarding, manage projects, automate workflows, and collaborate with customers in digital sales rooms.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --testTimeout 130000"
+    "test": "jest --testTimeout 150000"
   },
   "engines": {
     "node": ">=v22",

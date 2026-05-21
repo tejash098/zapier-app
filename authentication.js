@@ -90,7 +90,7 @@ const refreshAccessToken = async (z, bundle) => {
 
 module.exports = {
   type: "oauth2",
-  test: { url: "{{process.env.NGROK_URL}}/get_user_info" },
+  test: { url: "{{process.env.NGROK_URL}}/test/" },
   oauth2Config: {
     authorizeUrl: authorizeUrl,
     getAccessToken: getAccessToken,
@@ -100,5 +100,5 @@ module.exports = {
       "deal.read, deal.write, project.read, project.write, company.read, company.write, contact.read, contact.write, template.read, template.write, user.read, user.write",
   },
   fields: [],
-  connectionLabel: "{{bundle.inputData.name}} ({{bundle.inputData.email}})",
+  connectionLabel: "Projetly ({{bundle.inputData.organisation}})",
 };

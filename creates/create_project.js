@@ -112,9 +112,6 @@ const perform = async (z, bundle) => {
 
   return z.request(options).then((response) => {
     const results = response.json;
-
-    // You can do any parsing you need for results here before returning them
-
     return results;
   });
 };
@@ -155,9 +152,9 @@ module.exports = {
     inputFields: [
       {
         key: "company_id",
-        label: "Account / Company Id",
+        label: "Company Id",
         type: "string",
-        helpText: "Enter the Account Id from above step",
+        helpText: "Select the Company Id or Enter from Search step",
         dynamic: "company_created.company_id.company_name",
         search: "find_company.company_id",
         required: true,
@@ -199,6 +196,8 @@ module.exports = {
         key: "contact_id",
         label: "Customer / Contact Id",
         type: "string",
+        helpText:
+          "Select the customer / primary contact for this project. Use a Find Contact search step if not in the dropdown.",
         dynamic: "get_contact.contact_id.full_name",
         search: "find_contact.contact_id",
         required: true,
@@ -229,9 +228,64 @@ module.exports = {
         altersDynamicFields: false,
       },
       {
+        key: "account_name",
+        label: "Account: Account Name",
+        type: "string",
+        helpText: "Enter the Account Name",
+        required: true,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "website_url",
+        label: "Account: website URL / Domain",
+        type: "string",
+        helpText: "Enter the Website URL or Domain Name of Account",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "description",
+        label: "Account: Description",
+        type: "string",
+        helpText: "Enter the Description of Account.",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "vertical",
+        label: "Account: Vertical",
+        type: "string",
+        helpText: "Enter the vertical (industry segment) of the account.",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "segment",
+        label: "Account: Segment",
+        type: "string",
+        helpText: "Enter the Segment / Industry of Account.",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "region",
+        label: "Account: Region",
+        type: "string",
+        helpText: "Enter the region of the account (e.g. North America, EMEA, APAC).",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
         key: "project_name",
         label: "Project Name",
         type: "string",
+        helpText: "Enter the name of the project.",
         required: true,
         list: false,
         altersDynamicFields: false,
@@ -240,6 +294,7 @@ module.exports = {
         key: "start_date",
         label: "Start Date",
         type: "datetime",
+        helpText: "Enter the start date of the project.",
         required: false,
         list: false,
         altersDynamicFields: false,
@@ -248,14 +303,17 @@ module.exports = {
         key: "due_date",
         label: "Due Date",
         type: "datetime",
+        helpText: "Enter the due date of the project.",
         required: false,
         list: false,
         altersDynamicFields: false,
       },
       {
         key: "is_arr",
-        label: "Is Arr",
+        label: "Is ARR (Annual Recurring Revenue)",
         type: "boolean",
+        helpText:
+          "Toggle on if revenue should be tracked as Annual Recurring Revenue (ARR). Off treats revenue as Monthly Recurring Revenue (MRR).",
         required: false,
         list: false,
         altersDynamicFields: true,
@@ -264,6 +322,7 @@ module.exports = {
         key: "project_fee",
         label: "Project Fee",
         type: "number",
+        helpText: "Enter the one-time project fee, if any.",
         required: false,
         list: false,
         altersDynamicFields: false,
@@ -272,6 +331,7 @@ module.exports = {
         key: "show_forecasted_date",
         label: "Show Forecasted Date",
         type: "boolean",
+        helpText: "Toggle on to display a forecasted completion date on the project.",
         required: false,
         list: false,
         altersDynamicFields: false,

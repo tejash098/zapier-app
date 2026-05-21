@@ -101,8 +101,7 @@ module.exports = {
         key: "project_search_name",
         label: "Select Search Property Name",
         type: "string",
-        helpText:
-          "Select Company Field Name on which Find Action will be performed.",
+        helpText: "Select the project field to search on.",
         choices: { project_name: "Project Name", status__status_key: "Status" },
         required: true,
         list: false,
@@ -112,6 +111,8 @@ module.exports = {
         key: "condition",
         label: "Select Condition",
         type: "string",
+        helpText:
+          "Select how the search should match the value (Is = exact, Not = exclude, Contains = substring).",
         choices: { is: "Is", not: "Not", contains: "Contains" },
         required: true,
         list: false,

@@ -25,6 +25,10 @@ describe("creates.create_project", () => {
         due_date: "2026-06-25T18:30:00.000Z",
         billing_model: "fixed_cost",
         billing_frequency: "hourly",
+        account_name: "Test Account",
+        region: "asia",
+        vertical: "prospect",
+        segment: "mid_market"
       },
     };
 

@@ -169,6 +169,8 @@ module.exports = {
         key: "condition",
         label: "Select Condition",
         type: "string",
+        helpText:
+          "Select how the search should match the value (Is = exact, Not = exclude, Contains = substring).",
         choices: { is: "Is", not: "Not", contains: "contains" },
         required: true,
         list: false,
