@@ -8,7 +8,7 @@ describe('creates.create_contact', () => {
   it('should run', async () => {
     const bundle = {
       authData: {
-        access_token: process.env.authData_access_token || "test_access_token",
+        access_token: process.env.authData_access_token,
       },
       inputData: {
         company_owner: "7424310077881847809", //Alex Johnson

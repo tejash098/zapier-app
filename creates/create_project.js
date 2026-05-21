@@ -189,7 +189,8 @@ module.exports = {
         key: "owner_name",
         label: "Owner Name (optional)",
         type: "string",
-        helpText: "Enter owner full name to auto-map. Used as fallback if email lookup fails.",
+        helpText:
+          "Enter owner full name to auto-map. Used as fallback if email lookup fails.",
         required: false,
         list: false,
         altersDynamicFields: false,

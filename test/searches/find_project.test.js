@@ -8,13 +8,23 @@ zapier.tools.env.inject();
 
 describe('searches.find_project', () => {
   it('should run', async () => {
-    const bundle = { inputData: {} };
+    const bundle = {
+      authData: {
+        access_token: process.env.authData_access_token,
+      },
+      inputData: {
+        project_search_name: 'project_name',
+        condition: 'contains',
+        project_name: 'marketplace',
+      },
+      meta: { page: 0 },
+      };
 
     const results = await appTester(
       App.searches['find_project'].operation.perform,
       bundle,
     );
     expect(results).toBeDefined();
-    // TODO: add more assertions
+    expect(Array.isArray(results)).toBe(true);
   });
 });

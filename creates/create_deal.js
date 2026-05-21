@@ -60,7 +60,7 @@ const perform = async (z, bundle) => {
   });
   const contactData = contactRes.json || {};
   const contactDict = {
-    contact_id: contactData.user_id || null,
+    contact_id: contactData.contact_id || null,
     name: contactData.full_name || null,
     full_name: contactData.full_name || null,
     email: contactData.primary_email || null,
