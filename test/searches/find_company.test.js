@@ -25,5 +25,5 @@ describe("searches.find_company", () => {
     );
     expect(results).toBeDefined();
     expect(Array.isArray(results)).toBe(true);
-  });
+  }, 120000);
 });

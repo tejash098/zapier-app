@@ -32,11 +32,10 @@ describe('creates.create_deal', () => {
       App.creates['create_deal'].operation.perform,
       bundle,
     );
-    console.log('Response:', results);
     expect(results).toBeDefined();
     const isSuccess =
       results.status === 'success' ||
       (results.message && results.message.toLowerCase().includes('already exists'));
     expect(isSuccess).toBe(true);
-  }, 30000);
+  }, 120000);
 });

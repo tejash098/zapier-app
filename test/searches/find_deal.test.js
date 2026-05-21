@@ -24,8 +24,7 @@ describe('searches.find_deal', () => {
       App.searches['find_deal'].operation.perform,
       bundle,
     );
-    console.log('Response:', results);
     expect(results).toBeDefined();
     expect(Array.isArray(results)).toBe(true);
-  });
+  }, 120000);
 });

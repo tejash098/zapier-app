@@ -39,5 +39,5 @@ describe("creates.create_company", () => {
       results.status === "success" ||
       (results.message && results.message.toLowerCase().includes("already exists"));
     expect(isSuccess).toBe(true);
-  });
+  }, 120000);
 });

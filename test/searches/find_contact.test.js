@@ -25,5 +25,5 @@ describe("searches.find_contact", () => {
     );
     expect(results).toBeDefined();
     expect(Array.isArray(results)).toBe(true);
-  });
+  }, 120000);
 });

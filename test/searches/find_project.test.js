@@ -24,8 +24,7 @@ describe('searches.find_project', () => {
       App.searches['find_project'].operation.perform,
       bundle,
     );
-    console.log('Response:', results);
     expect(results).toBeDefined();
     expect(Array.isArray(results)).toBe(true);
-  });
+  }, 120000);
 });

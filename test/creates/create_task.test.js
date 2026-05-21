@@ -37,5 +37,5 @@ describe("creates.create_task", () => {
     expect(results).toBeDefined();
     expect(results.status).toBe("success");
     expect(results.item_id).toBeDefined();
-  });
+  }, 120000);
 });

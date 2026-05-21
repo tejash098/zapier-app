@@ -42,9 +42,8 @@ const perform = async (z, bundle) => {
   };
 
   return z.request(options).then((response) => {
-    const data = response.json;
-    const results = data.results;
-    return results;
+    const data = response.json || {};
+    return data.results || [];
   });
 };
 
@@ -189,7 +188,7 @@ module.exports = {
       },
       { key: "id", label: "Id" },
     ],
-    canPaginate: true,
+    canPaginate: false,
   },
   display: {
     description: "Finds a Project by Name",

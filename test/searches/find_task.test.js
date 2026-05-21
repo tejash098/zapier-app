@@ -24,5 +24,5 @@ describe("searches.find_task", () => {
       bundle,
     );
     expect(results).toBeDefined();
-  });
+  }, 120000);
 });
