@@ -6,8 +6,6 @@ const perform = async (z, bundle) => {
       Accept: 'application/json',
     },
     params: {
-      'items_per_page': 20,
-      'page': bundle.meta.page + 1
     },
     removeMissingValuesFrom: {
       body: true,
@@ -16,11 +14,10 @@ const perform = async (z, bundle) => {
   };
 
   return z.request(options).then((response) => {
-    const results = response.json.map((result)=>({
+    const results = (response.json || []).map((result) => ({
+      ...result,
       id: result.user_id,
-      user_id: result.user_id,
-      full_name: result.full_name
-    }))
+    }));
     return results;
   });
 };
@@ -28,7 +25,7 @@ const perform = async (z, bundle) => {
 module.exports = {
   operation: {
     perform: perform,
-    canPaginate: true,
+    canPaginate: false,
     sample: {
       id: '7424309824034181121',
       user_id: '7424309824034181121',

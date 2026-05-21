@@ -6,7 +6,7 @@ const perform = async (z, bundle) => {
     params: {
       module: "projects",
       project_type: "project",
-      items_per_page: 20,
+      items_per_page: 10,
       page: bundle.meta.page + 1,
     },
   };

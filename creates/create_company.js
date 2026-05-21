@@ -1,13 +1,11 @@
+const getUsersTrigger = require("../triggers/get_users");
+const getCompanyOptionsTrigger = require("../triggers/get_company_options");
+
 const resolveOwner = async (z, bundle, ownerKey) => {
   const { owner_email, owner_name } = bundle.inputData;
   const ownerId = bundle.inputData[ownerKey];
 
-  const res = await z.request({
-    url: `${process.env.NGROK_URL}/users/`,
-    method: "GET",
-    headers: { Accept: "application/json" },
-  });
-  const users = Array.isArray(res.json) ? res.json : [];
+  const users = await getUsersTrigger.operation.perform(z, bundle);
 
   if (owner_email) {
     const found = users.find(
@@ -52,14 +50,12 @@ const perform = async (z, bundle) => {
   const ownerData = await resolveOwner(z, bundle, "company_owner");
   const resolvedOwner = ownerData.user_id || bundle.inputData.company_owner;
 
-  const optRes = await z.request({
-    url: `${process.env.NGROK_URL}/company/`,
-    method: "GET",
-    headers: { Accept: "application/json" },
-    params: { options: "options" },
-  });
-  const { company_revenues = [], company_employee_ranges = [] } =
-    optRes.json || {};
+  const companyOptions = await getCompanyOptionsTrigger.operation.perform(
+    z,
+    bundle,
+  );
+  const data = companyOptions[0] || {};
+  const { company_revenues = [], company_employee_ranges = [] } = data;
 
   const mappedArr = mapNumberToRangeKey(
     bundle.inputData.estimated_arr,
@@ -147,7 +143,7 @@ const inputFields = async (z, bundle) => {
       module: "templates",
       template_type: "pipelines",
       sub_template_type: 6,
-      items_per_page: 20,
+      items_per_page: 10,
       page: bundle.meta.page + 1,
     },
     removeMissingValuesFrom: {
@@ -189,15 +185,11 @@ const inputFields = async (z, bundle) => {
 };
 
 const optionsFields = async (z, bundle) => {
-  const options = {
-    url: `${process.env.NGROK_URL}/company/`,
-    method: "GET",
-    headers: { Accept: "application/json" },
-    params: { options: "options" },
-  };
-
-  const response = await z.request(options);
-  const data = response.json || {};
+  const companyOptions = await getCompanyOptionsTrigger.operation.perform(
+    z,
+    bundle,
+  );
+  const data = companyOptions || {};
 
   const formatLabel = (name) => {
     if (!name) return "";

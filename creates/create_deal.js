@@ -1,13 +1,10 @@
+const getUsersTrigger = require("../triggers/get_users");
+
 const resolveOwner = async (z, bundle, ownerKey) => {
   const { owner_email, owner_name } = bundle.inputData;
   const ownerId = bundle.inputData[ownerKey];
 
-  const res = await z.request({
-    url: `${process.env.NGROK_URL}/users/`,
-    method: "GET",
-    headers: { Accept: "application/json" },
-  });
-  const users = Array.isArray(res.json) ? res.json : [];
+  const users = await getUsersTrigger.operation.perform(z, bundle);
 
   if (owner_email) {
     const found = users.find(

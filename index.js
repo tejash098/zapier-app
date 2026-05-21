@@ -44,6 +44,8 @@ const getContactTrigger = require("./triggers/get_contact.js");
 const taskCreatedTrigger = require("./triggers/task_created.js");
 const taskUpdatedTrigger = require("./triggers/task_updated.js");
 const getProjectsTrigger = require("./triggers/get_projects.js");
+const getCompanyOptionsTrigger = require("./triggers/get_company_options.js");
+const getContactOptionsTrigger = require("./triggers/get_contact_options.js");
 const createCompanyCreate = require("./creates/create_company.js");
 const createContactCreate = require("./creates/create_contact.js");
 const createDealCreate = require("./creates/create_deal.js");
@@ -84,6 +86,8 @@ module.exports = {
     [taskCreatedTrigger.key]: taskCreatedTrigger,
     [taskUpdatedTrigger.key]: taskUpdatedTrigger,
     [getProjectsTrigger.key]: getProjectsTrigger,
+    [getCompanyOptionsTrigger.key]: getCompanyOptionsTrigger,
+    [getContactOptionsTrigger.key]: getContactOptionsTrigger,
   },
   searches: {
     [findProjectSearch.key]: findProjectSearch,

@@ -10,7 +10,7 @@ const performList = async (z, bundle) => {
     params: {
       module: "deal_plan",
       project_type: "deal",
-      items_per_page: 20,
+      items_per_page: 10,
       sort: "-last_update_time",
     },
     removeMissingValuesFrom: { params: true },

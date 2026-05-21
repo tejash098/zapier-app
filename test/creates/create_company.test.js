@@ -15,7 +15,7 @@ describe("creates.create_company", () => {
         owner_name: "Tejash Kumar Singh",
         company_pipeline_id: "7450876547860271105",
         status_key: "new",
-        company_name: "Test Company Inc",
+        company_name: "Test Company Inc (test 2)",
         domain: "testcompany.com",
         company_owner: "user123",
         company_pipeline_id: "pipeline123",
@@ -35,5 +35,9 @@ describe("creates.create_company", () => {
       bundle,
     );
     expect(results).toBeDefined();
+    const isSuccess =
+      results.status === "success" ||
+      (results.message && results.message.toLowerCase().includes("already exists"));
+    expect(isSuccess).toBe(true);
   });
 });

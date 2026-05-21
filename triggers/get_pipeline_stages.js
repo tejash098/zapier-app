@@ -10,7 +10,7 @@ const perform = async (z, bundle) => {
       template_type: 'pipelines',
       page: bundle.meta.page + 1,
       sub_template_type: 4,
-      items_per_page: 20,
+      items_per_page: 10,
     },
     removeMissingValuesFrom: {
       body: true,

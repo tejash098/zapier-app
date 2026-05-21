@@ -29,7 +29,7 @@ const perform = async (z, bundle) => {
       Accept: 'application/json',
     },
     params: {
-      items_per_page: 50,
+      items_per_page: 10,
       page: bundle.meta.page + 1,
       project_type: 'project',
       module: 'projects',

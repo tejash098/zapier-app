@@ -9,7 +9,7 @@ const perform = async (z, bundle) => {
       module: 'templates',
       template_type: 'deal_stages',
       sub_template_type: 4,
-      items_per_page: 20,
+      items_per_page: 10,
       page: bundle.meta.page + 1,
     },
     removeMissingValuesFrom: {

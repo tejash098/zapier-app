@@ -1,13 +1,11 @@
+const getUsersTrigger = require("../triggers/get_users");
+const getContactOptionsTrigger = require("../triggers/get_contact_options");
+
 const resolveOwner = async (z, bundle, ownerKey) => {
   const { owner_email, owner_name } = bundle.inputData;
   const ownerId = bundle.inputData[ownerKey];
 
-  const res = await z.request({
-    url: `${process.env.NGROK_URL}/users/`,
-    method: "GET",
-    headers: { Accept: "application/json" },
-  });
-  const users = Array.isArray(res.json) ? res.json : [];
+  const users = await getUsersTrigger.operation.perform(z, bundle);
 
   if (owner_email) {
     const found = users.find(
@@ -103,7 +101,7 @@ const inputFields = async (z, bundle) => {
       module: "templates",
       template_type: "pipelines",
       sub_template_type: 5,
-      items_per_page: 20,
+      items_per_page: 10,
       page: bundle.meta.page + 1,
     },
     removeMissingValuesFrom: {
@@ -143,15 +141,11 @@ const inputFields = async (z, bundle) => {
 };
 
 const optionsFields = async (z, bundle) => {
-  const options = {
-    url: `${process.env.NGROK_URL}/contact/`,
-    method: "GET",
-    headers: { Accept: "application/json" },
-    params: { options: "options" },
-  };
-
-  const response = await z.request(options);
-  const data = response.json || {};
+  const contactOptions = await getContactOptionsTrigger.operation.perform(
+    z,
+    bundle,
+  );
+  const data = contactOptions[0] || {};
 
   const formatLabel = (name) => {
     if (!name) return "";
