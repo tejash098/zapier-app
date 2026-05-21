@@ -16,7 +16,7 @@ const perform = async (z, bundle) => {
       Accept: "application/json",
     },
     params: {
-      limit: "20",
+      limit: 20,
       sort: "-creation_time",
       next_cursor: cursor,
     },
@@ -26,17 +26,16 @@ const perform = async (z, bundle) => {
   };
 
   const response = await z.request(options);
-  
+
   // Store the cursor if it exists for pagination
   if (response.json && response.json.next_cursor) {
     await z.cursor.set(response.json.next_cursor);
   }
 
   const results = response.json.results || [];
-  
+
   return results;
 };
-
 
 module.exports = {
   operation: {
@@ -45,7 +44,7 @@ module.exports = {
     sample: {
       id: "7459953420019961857",
       company_id: "7459953420019961857",
-      company_name: "TEST COMPANY",
+      company_name: "SAMPLE COMPANY",
     },
     outputFields: [
       { key: "id", label: "Id" },
@@ -54,7 +53,7 @@ module.exports = {
     ],
   },
   display: {
-    description: "Triggers when users select company from Dropdown",
+    description: "Triggers when users have to select company from Dropdown",
     hidden: true,
     label: "Get Company",
   },

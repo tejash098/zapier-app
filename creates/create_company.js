@@ -26,9 +26,49 @@ const resolveOwner = async (z, bundle, ownerKey) => {
   return users.find((u) => u.user_id === ownerId) || {};
 };
 
+const mapNumberToRangeKey = (num, ranges) => {
+  if (num === undefined || num === null || num === "") return undefined;
+  const value = Number(num);
+  for (const range of ranges) {
+    const key = range.key;
+    const isMillion = key.includes("m");
+    const cleanKey = key.replace("m", "");
+
+    if (cleanKey.includes("+")) {
+      const min =
+        parseFloat(cleanKey.replace("+", "")) * (isMillion ? 1000000 : 1);
+      if (value >= min) return key;
+    } else if (cleanKey.includes("-")) {
+      const parts = cleanKey.split("-");
+      const min = parseFloat(parts[0]) * (isMillion ? 1000000 : 1);
+      const max = parseFloat(parts[1]) * (isMillion ? 1000000 : 1);
+      if (value >= min && value <= max) return key;
+    }
+  }
+  return undefined;
+};
+
 const perform = async (z, bundle) => {
   const ownerData = await resolveOwner(z, bundle, "company_owner");
   const resolvedOwner = ownerData.user_id || bundle.inputData.company_owner;
+
+  const optRes = await z.request({
+    url: `${process.env.NGROK_URL}/company/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    params: { options: "options" },
+  });
+  const { company_revenues = [], company_employee_ranges = [] } =
+    optRes.json || {};
+
+  const mappedArr = mapNumberToRangeKey(
+    bundle.inputData.estimated_arr,
+    company_revenues,
+  );
+  const mappedEmp = mapNumberToRangeKey(
+    bundle.inputData.employee_range,
+    company_employee_ranges,
+  );
 
   const options = {
     url: `${process.env.NGROK_URL}/company/`,
@@ -53,19 +93,28 @@ const perform = async (z, bundle) => {
       lead_status_pipeline_id: bundle.inputData.company_pipeline_id,
       parent_company: bundle.inputData.parent_company,
       parent_company_id: bundle.inputData.parent_company_id,
-      operating_regions: bundle.inputData.operating_regions
-        ? [bundle.inputData.operating_regions]
-        : [],
+      operating_regions: (bundle.inputData.operating_regions || []).map(
+        (region) =>
+          region
+            .split(" ")
+            .map((word) =>
+              word.length === 2
+                ? word.toUpperCase()
+                : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+            )
+            .join(" "),
+      ),
       category: bundle.inputData.category,
       industry: bundle.inputData.industry,
       company_owner: resolvedOwner,
       customer_segment: bundle.inputData.customer_segment,
       icp_fit: bundle.inputData.icp_fit,
       company_type: bundle.inputData.company_type,
+      connection_source: bundle.inputData.connection_source,
       vendor_being_replaced: bundle.inputData.vendor_being_replaced,
       record_source: "integration",
-      estimated_arr: bundle.inputData.estimated_arr,
-      employee_range: bundle.inputData.employee_range,
+      estimated_arr: mappedArr,
+      employee_range: mappedEmp,
       hq_location: {
         country: bundle.inputData.country,
         state: bundle.inputData.state,
@@ -137,6 +186,77 @@ const inputFields = async (z, bundle) => {
       },
     ];
   });
+};
+
+const optionsFields = async (z, bundle) => {
+  const options = {
+    url: `${process.env.NGROK_URL}/company/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    params: { options: "options" },
+  };
+
+  const response = await z.request(options);
+  const data = response.json || {};
+
+  const formatLabel = (name) => {
+    if (!name) return "";
+    let clean = name.replace(/^UI\.pr_(?:company_type_|segment_|icp_)?/, "");
+    return clean
+      .split("_")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+  };
+
+  const mapChoices = (items, keyProp = "key") => {
+    const choices = {};
+    (items || []).forEach((item) => {
+      choices[item[keyProp] || item.value] = formatLabel(
+        item.name || item.label,
+      );
+    });
+    return choices;
+  };
+
+  return [
+    {
+      key: "customer_segment",
+      label: "Customer Segment",
+      type: "string",
+      helpText: "Select the Customer Segment.",
+      choices: mapChoices(data.company_customer_segments),
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+    },
+    {
+      key: "icp_fit",
+      label: "ICP Fit",
+      type: "string",
+      choices: mapChoices(data.company_icp_fits),
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+    },
+    {
+      key: "company_type",
+      label: "Company Type",
+      type: "string",
+      choices: mapChoices(data.company_types),
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+    },
+    {
+      key: "connection_source",
+      label: "Connection Source",
+      type: "string",
+      choices: mapChoices(data.company_connection_sources, "value"),
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+    },
+  ];
 };
 
 module.exports = {
@@ -241,12 +361,30 @@ module.exports = {
         altersDynamicFields: false,
       },
       {
+        key: "estimated_arr",
+        label: "Estimated ARR",
+        type: "number",
+        helpText: "Enter the Estimated Annual Recurring Revenue.",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
+        key: "employee_range",
+        label: "Employee Range",
+        type: "number",
+        helpText: "Enter the number of employees.",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
         key: "operating_regions",
         label: "Operating Regions",
         type: "string",
         helpText: "Enter the Operating Region of the Company",
         required: false,
-        list: false,
+        list: true,
         altersDynamicFields: false,
       },
       {
@@ -312,86 +450,7 @@ module.exports = {
         list: false,
         altersDynamicFields: false,
       },
-      {
-        key: "customer_segment",
-        label: "Customer Segment",
-        type: "string",
-        helpText: "Select the Customer Segment.",
-        choices: {
-          smb: "SMB",
-          market: "Mid Market",
-          enterprise: "Enterprise",
-          strategic: "Strategic",
-        },
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
-        key: "icp_fit",
-        label: "ICP Fit",
-        type: "string",
-        choices: {
-          excellent: "Excellent",
-          good: "Good",
-          medium: "Medium",
-          low: "Low",
-        },
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
-        key: "company_type",
-        label: "Company Type",
-        type: "string",
-        choices: {
-          prospect: "Prospect",
-          active_customer: "Active Customer",
-          partner: "Partner",
-          other: "Other",
-        },
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
-        key: "vendor_being_replaced",
-        label: "Vendor Being Replaced",
-        type: "string",
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
-        key: "estimated_arr",
-        label: "Estimated ARR",
-        type: "string",
-        choices: {
-          "1-5m": "1-5M",
-          "5-10m": "5-10M",
-          "10-50m": "10-50M",
-          "50m+": "50M+",
-        },
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
-        key: "employee_range",
-        label: "Employee Range",
-        type: "string",
-        choices: {
-          "1-10": "1-10 Employees",
-          "11-50": "11-50 Employees",
-          "51-200": "51-200 Employees",
-          "201-500": "201-500 Employees",
-          "500+": "500+ Employees",
-        },
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
+      optionsFields,
     ],
     sample: {
       status: "success",

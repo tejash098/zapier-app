@@ -48,10 +48,8 @@ const perform = async (z, bundle) => {
       linkedin_url: bundle.inputData.linkedin_url,
       twitter_url: bundle.inputData.twitter_url,
       whatsapp_number: bundle.inputData.whatsapp_number,
-      secondary_emails: bundle.inputData.secondary_emails
-        ? [bundle.inputData.secondary_emails]
-        : [],
-      phones: bundle.inputData.phones ? [bundle.inputData.phones] : [],
+      secondary_emails: bundle.inputData.secondary_emails || [],
+      phones: bundle.inputData.phones || [],
       phone: {
         primary: bundle.inputData.primary_phone,
       },
@@ -75,6 +73,7 @@ const perform = async (z, bundle) => {
       internal_notes: bundle.inputData.internal_notes,
       buying_role: bundle.inputData.buying_role,
       person_category: bundle.inputData.person_category,
+      communication_channel: bundle.inputData.communication_channel,
       lead_source: "integration",
       is_draft: false,
     },
@@ -141,6 +140,65 @@ const inputFields = async (z, bundle) => {
       },
     ];
   });
+};
+
+const optionsFields = async (z, bundle) => {
+  const options = {
+    url: `${process.env.NGROK_URL}/contact/`,
+    method: "GET",
+    headers: { Accept: "application/json" },
+    params: { options: "options" },
+  };
+
+  const response = await z.request(options);
+  const data = response.json || {};
+
+  const formatLabel = (name) => {
+    if (!name) return "";
+    let clean = name.replace(/^UI\.pr_(?:person_category_|other)?/, "");
+    return clean
+      .split("_")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+  };
+
+  const mapChoices = (items) => {
+    const choices = {};
+    (items || []).forEach((item) => {
+      choices[item.key] = formatLabel(item.name || item.label);
+    });
+    return choices;
+  };
+
+  return [
+    {
+      key: "person_category",
+      label: "Person Category",
+      type: "string",
+      choices: mapChoices(data.contact_person_categories),
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+    },
+    {
+      key: "buying_role",
+      label: "Buying Role",
+      type: "string",
+      choices: mapChoices(data.contact_buying_roles),
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+    },
+    {
+      key: "communication_channel",
+      label: "Preferred Communication Channel",
+      type: "string",
+      choices: mapChoices(data.contact_communication_channels),
+      required: false,
+      list: false,
+      altersDynamicFields: false,
+    },
+  ];
 };
 
 module.exports = {
@@ -274,7 +332,7 @@ module.exports = {
         label: "Secondary Email",
         type: "string",
         required: false,
-        list: false,
+        list: true,
         altersDynamicFields: false,
       },
       {
@@ -282,7 +340,7 @@ module.exports = {
         label: "Secondary Phones",
         type: "string",
         required: false,
-        list: false,
+        list: true,
         altersDynamicFields: false,
       },
       {
@@ -334,6 +392,14 @@ module.exports = {
         altersDynamicFields: false,
       },
       {
+        key: "internal_notes",
+        label: "Internal Notes",
+        type: "text",
+        required: false,
+        list: false,
+        altersDynamicFields: false,
+      },
+      {
         key: "language",
         label: "Preferred Language",
         type: "string",
@@ -357,20 +423,6 @@ module.exports = {
         altersDynamicFields: false,
       },
       {
-        key: "person_category",
-        label: "Person Category",
-        type: "string",
-        choices: {
-          prospect: "Prospect",
-          customer_contact: "Customer Contact",
-          partner_contact: "Partner Contact",
-          other: "Other",
-        },
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
         key: "campaign",
         label: "Campaign",
         type: "string",
@@ -378,29 +430,7 @@ module.exports = {
         list: false,
         altersDynamicFields: false,
       },
-      {
-        key: "internal_notes",
-        label: "Internal Notes",
-        type: "text",
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
-      {
-        key: "buying_role",
-        label: "Buying Role",
-        type: "string",
-        choices: {
-          decision_maker: "Decision Maker",
-          champion: "Champion",
-          influencer: "Influencer",
-          user: "User",
-          blocker: "Blocker",
-        },
-        required: false,
-        list: false,
-        altersDynamicFields: false,
-      },
+      optionsFields,
     ],
     sample: {
       status: "success",
