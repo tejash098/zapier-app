@@ -109,7 +109,15 @@ const milestoneAndStatusFields = async (z, bundle) => {
     headers: { Accept: "application/json" },
     params: { options: "options", template_id },
   });
-  const statuses = taskOptRes.json.status || [];
+  // skipThrowForStatus is set globally, so a failed call returns its error body
+  // here instead of throwing — and that body's `status` is a string, not the array.
+  if (taskOptRes.status >= 400) {
+    z.console.error(
+      `[create:create_task] task options failed status=${taskOptRes.status}`,
+    );
+  }
+  const rawStatuses = taskOptRes.json && taskOptRes.json.status;
+  const statuses = Array.isArray(rawStatuses) ? rawStatuses : [];
 
   return [
     {
@@ -169,7 +177,7 @@ const assignUserFields = async (z, bundle) => {
     params: { users: "users", project_id: projectId },
   });
 
-  const users = res.json || [];
+  const users = Array.isArray(res.json) ? res.json : [];
 
   return [
     ...staticFields,

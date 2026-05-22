@@ -38,4 +38,25 @@ describe("creates.create_task", () => {
     expect(results.status).toBe("success");
     expect(results.item_id).toBeDefined();
   }, 120000);
+
+  it("resolves dynamic input fields without throwing", async () => {
+    const bundle = {
+      authData: {
+        access_token: process.env.authData_access_token,
+        refresh_token: process.env.authData_refresh_token,
+      },
+      inputData: {
+        project_id: "7442427864764387329",
+      },
+    };
+
+    const dynamicFns = App.creates[
+      "create_task"
+    ].operation.inputFields.filter((field) => typeof field === "function");
+
+    for (const fn of dynamicFns) {
+      const fields = await appTester(fn, bundle);
+      expect(Array.isArray(fields)).toBe(true);
+    }
+  }, 120000);
 });
