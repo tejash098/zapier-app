@@ -437,13 +437,15 @@ module.exports = {
       inputFields1,
     ],
     sample: {
+      id: "7463469874094804993",
       status: "success",
-      project_id: "7455235793758457857",
-      account_id: "",
-      name: "",
+      project_id: "7463469874094804993",
+      account_id: "7455602071400615937",
+      name: "Sample Deal",
       message: "Successfully added project",
     },
     outputFields: [
+      { key: "id", label: "Id" },
       { key: "status", label: "Status" },
       { key: "project_id", label: "Project Id" },
       { key: "account_id", label: "Account Id" },
