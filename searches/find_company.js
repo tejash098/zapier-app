@@ -27,6 +27,7 @@ const perform = async (z, bundle) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "x-functions-key": "",
     },
     params: {
       limit: 20,
@@ -77,6 +78,7 @@ const inputFields = async (z, bundle) => {
     method: "GET",
     headers: {
       Accept: "application/json",
+      "x-functions-key": "",
     },
     params: {
       options: "options",

@@ -1,3 +1,5 @@
+const { makeSubscribe, unsubscribe } = require("../utils/webhook_hooks");
+
 const perform = async (z, bundle) => {
   return [bundle.cleanedRequest];
 };
@@ -221,28 +223,8 @@ module.exports = {
     ],
     inputFields: [],
     type: "hook",
-    performSubscribe: {
-      body: {
-        target_url: "{{bundle.targetUrl}}",
-        events: "['task_created']",
-        app_name: "zapier",
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      method: "POST",
-      url: "{{process.env.MARKETPLACE_URL}}/webhook/subscribe/",
-    },
-    performUnsubscribe: {
-      body: { subscriptionId: "{{bundle.subscribeData.id}}" },
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      method: "DELETE",
-      url: "{{process.env.MARKETPLACE_URL}}/webhook/unsubscribe/",
-    },
+    performSubscribe: makeSubscribe("task_created"),
+    performUnsubscribe: unsubscribe,
   },
   display: {
     description: "Triggers when a new task is created in Projetly.",

@@ -4,6 +4,7 @@ const perform = async (z, bundle) => {
     method: "GET",
     headers: {
       Accept: "application/json",
+      "x-functions-key": "",
     },
     params: {},
     removeMissingValuesFrom: {

@@ -214,65 +214,38 @@ zapier-platform invoke search <key>
 
 | Projetly Function | Route (Method) | Zapier Caller (zapier-app/) | Line |
 |---|---|---|---|
-| **ZapierGetCompanies** | GET `zapier/company` | `triggers/get_company.js` | L28 |
-| | | `searches/find_company.js` | L41 |
-| | | `searches/find_company.js` | L90 |
-| | | `triggers/company_created.js` | L17 |
-| | | `triggers/company_updated.js` | L13 |
-| | | `triggers/get_company_options.js` | L9 |
-| **ZapierCreateCompany** | POST `zapier/company` | `creates/create_company.js` | L129 |
-| **ZapierGetContacts** | GET `zapier/contact` | `triggers/get_contact.js` | L28 |
-| | | `searches/find_contact.js` | L41 |
-| | | `searches/find_contact.js` | L98 |
-| | | `creates/create_deal.js` | L53 |
-| | | `creates/create_project.js` | L53 |
-| | | `triggers/contact_created.js` | L13 |
-| | | `triggers/contact_updated.js` | L13 |
-| | | `triggers/get_contact_options.js` | L9 |
-| **ZapierCreateContact** | POST `zapier/contact` | `creates/create_contact.js` | L84 |
-| **ZapierGetTemplates** | GET `zapier/templates` | `triggers/get_pipeline.js` | L21 |
-| | | `triggers/get_pipeline_stages.js` | L21 |
-| | | `triggers/get_deal_room_templates.js` | L21 |
-| | | `triggers/get_company_pipeline.js` | L21 |
-| | | `triggers/get_contact_pipeline.js` | L21 |
-| | | `triggers/get_project_template.js` | L21 |
-| | | `creates/create_company.js` | L155 |
-| | | `creates/create_contact.js` | L113 |
-| | | `creates/create_deal.js` | L27 |
-| | | `creates/create_project.js` | L27 |
-| **ZapierGetProject** | GET `zapier/project` | `triggers/get_projects.js` | L14 |
-| | | `searches/find_project.js` | L44 |
-| | | `searches/find_deal.js` | L44 |
-| | | `searches/find_task.js` | L39 |
-| | | `triggers/deal_created.js` | L18 |
-| | | `triggers/deal_updated.js` | L18 |
-| | | `triggers/project_created.js` | L18 |
-| | | `triggers/project_updated.js` | L18 |
-| | | `creates/create_task.js` | L98 |
-| **ZapierCreateProject** | POST `zapier/project` | `creates/create_project.js` | L113 |
-| | | `creates/create_deal.js` | L120 |
-| **ZapierGetUsers** | GET `zapier/users` | `triggers/get_users.js` | L15 |
-| **ZapierCreateTask** | POST `zapier/task` | `creates/create_task.js` | L91 |
-| **ZapierGetTask** | GET `zapier/task` | `creates/create_task.js` | L5 |
-| | | `creates/create_task.js` | L106 |
-| | | `creates/create_task.js` | L173 |
-| **ZapierWebhookSubscribe** | POST `zapier/webhook/subscribe/` | `triggers/project_created.js` | performSubscribe |
-| | | `triggers/project_updated.js` | performSubscribe |
-| | | `triggers/company_created.js` | performSubscribe |
-| | | `triggers/company_updated.js` | performSubscribe |
-| | | `triggers/contact_created.js` | performSubscribe |
-| | | `triggers/contact_updated.js` | performSubscribe |
-| | | `triggers/deal_created.js` | performSubscribe |
-| | | `triggers/deal_updated.js` | performSubscribe |
-| | | `triggers/task_created.js` | performSubscribe |
-| | | `triggers/task_updated.js` | performSubscribe |
-| **ZapierWebhookUnsubscribe** | DELETE `zapier/webhook/unsubscribe/` | `triggers/project_created.js` | performUnsubscribe |
-| | | `triggers/project_updated.js` | performUnsubscribe |
-| | | `triggers/company_created.js` | performUnsubscribe |
-| | | `triggers/company_updated.js` | performUnsubscribe |
-| | | `triggers/contact_created.js` | performUnsubscribe |
-| | | `triggers/contact_updated.js` | performUnsubscribe |
-| | | `triggers/deal_created.js` | performUnsubscribe |
-| | | `triggers/deal_updated.js` | performUnsubscribe |
-| | | `triggers/task_created.js` | performUnsubscribe |
-| | | `triggers/task_updated.js` | performUnsubscribe |
+| **ZapierGetCompanies** | GET `zapier/company` | `triggers/get_company.js` | L15 |
+| | | `searches/find_company.js` | L27 |
+| | | `searches/find_company.js` | L79 |
+| | | `triggers/company_created.js` | L11 |
+| | | `triggers/company_updated.js` | L11 |
+| | | `triggers/get_company_options.js` | L5 |
+| **ZapierCreateCompany** | POST `zapier/company` | `creates/create_company.js` | L73 |
+| **ZapierGetContacts** | GET `zapier/contact` | `triggers/get_contact.js` | L15 |
+| | | `searches/find_contact.js` | L27 |
+| | | `searches/find_contact.js` | L87 |
+| | | `creates/create_deal.js` | L51 |
+| | | `creates/create_project.js` | L51 |
+| | | `triggers/contact_created.js` | L11 |
+| | | `triggers/contact_updated.js` | L11 |
+| | | `triggers/get_contact_options.js` | L5 |
+| **ZapierCreateContact** | POST `zapier/contact` | `creates/create_contact.js` | L35 |
+| **ZapierGetTemplates** | GET `zapier/templates` | `utils/template_requests.js` | L14 |
+| **ZapierGetProject** | GET `zapier/project` | `triggers/get_projects.js` | L5 |
+| | | `searches/find_project.js` | L27 |
+| | | `searches/find_deal.js` | L27 |
+| | | `searches/find_task.js` | L27 |
+| | | `triggers/deal_created.js` | L11 |
+| | | `triggers/deal_updated.js` | L11 |
+| | | `triggers/project_created.js` | L11 |
+| | | `triggers/project_updated.js` | L11 |
+| | | `creates/create_task.js` | L105 |
+| **ZapierCreateProject** | POST `zapier/project` | `creates/create_project.js` | L72 |
+| | | `creates/create_deal.js` | L72 |
+| **ZapierGetUsers** | GET `zapier/users` | `triggers/get_users.js` | L5 |
+| **ZapierCreateTask** | POST `zapier/task` | `creates/create_task.js` | L66 |
+| **ZapierGetTask** | GET `zapier/task` | `creates/create_task.js` | L8 |
+| | | `creates/create_task.js` | L116 |
+| | | `creates/create_task.js` | L186 |
+| **ZapierWebhookSubscribe** | POST `zapier/webhook/subscribe/` | `utils/webhook_hooks.js` | L7 |
+| **ZapierWebhookUnsubscribe** | DELETE `zapier/webhook/unsubscribe/` | `utils/webhook_hooks.js` | L18 |

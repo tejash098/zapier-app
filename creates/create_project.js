@@ -1,4 +1,5 @@
 const getUsersTrigger = require("../triggers/get_users");
+const { makeTemplatesRequest } = require("../utils/template_requests");
 
 const resolveOwner = async (z, bundle, ownerKey) => {
   const { owner_email, owner_name } = bundle.inputData;
@@ -24,16 +25,10 @@ const resolveOwner = async (z, bundle, ownerKey) => {
 };
 
 const perform = async (z, bundle) => {
-  const templateRes = await z.request({
-    url: `${process.env.MARKETPLACE_URL}/templates/`,
-    method: "GET",
-    headers: { Accept: "application/json" },
-    params: {
-      module: "templates",
-      template_type: "project",
-      sub_template_type: bundle.inputData.project_type || null,
-    },
-  });
+  const templateRes = await z.request(makeTemplatesRequest({
+    templateType: "project",
+    subTemplateType: bundle.inputData.project_type || null,
+  }));
   const templateData = templateRes.json;
   const template = templateData.results.find(
     (result) => result.org_temp_id === bundle.inputData.org_temp_id,
@@ -53,7 +48,10 @@ const perform = async (z, bundle) => {
   const contactRes = await z.request({
     url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "x-functions-key": "",
+    },
     params: {
       contact_id: bundle.inputData.contact_id,
     },
@@ -74,6 +72,7 @@ const perform = async (z, bundle) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "x-functions-key": "",
     },
     params: {},
     body: {

@@ -1,22 +1,11 @@
+const { makeTemplatesRequest } = require("../utils/template_requests");
+
 const perform = async (z, bundle) => {
-  const options = {
-    url: `${process.env.MARKETPLACE_URL}/templates/`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
-    params: {
-      module: "templates",
-      template_type: "deal_stages",
-      sub_template_type: 4,
-      items_per_page: 10,
-      page: bundle.meta.page + 1,
-    },
-    removeMissingValuesFrom: {
-      body: true,
-      params: true,
-    },
-  };
+  const options = makeTemplatesRequest({
+    templateType: "deal_stages",
+    subTemplateType: 4,
+    page: bundle.meta.page + 1,
+  });
 
   return z.request(options).then((response) => {
     const data = response.json;

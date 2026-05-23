@@ -2,7 +2,10 @@ const perform = async (z, bundle) => {
   const options = {
     url: `${process.env.MARKETPLACE_URL}/project/`,
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "x-functions-key": "",
+    },
     params: {
       module: "projects",
       project_type: "project",

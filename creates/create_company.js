@@ -1,5 +1,6 @@
 const getUsersTrigger = require("../triggers/get_users");
 const getCompanyOptionsTrigger = require("../triggers/get_company_options");
+const { makeTemplatesRequest } = require("../utils/template_requests");
 
 const resolveOwner = async (z, bundle, ownerKey) => {
   const { owner_email, owner_name } = bundle.inputData;
@@ -72,6 +73,7 @@ const perform = async (z, bundle) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "x-functions-key": "",
     },
     params: {},
     body: {
@@ -133,24 +135,11 @@ const perform = async (z, bundle) => {
 };
 
 const inputFields = async (z, bundle) => {
-  const options = {
-    url: `${process.env.MARKETPLACE_URL}/templates/`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-    },
-    params: {
-      module: "templates",
-      template_type: "pipelines",
-      sub_template_type: 6,
-      items_per_page: 10,
-      page: bundle.meta.page + 1,
-    },
-    removeMissingValuesFrom: {
-      body: true,
-      params: true,
-    },
-  };
+  const options = makeTemplatesRequest({
+    templateType: "pipelines",
+    subTemplateType: 6,
+    page: bundle.meta.page + 1,
+  });
 
   return z.request(options).then((response) => {
     const data = response.json || {};

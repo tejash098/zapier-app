@@ -27,6 +27,7 @@ const perform = async (z, bundle) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "x-functions-key": "",
     },
     params: {
       items_per_page: 10,

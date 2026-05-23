@@ -5,7 +5,10 @@ const resolveUser = async (z, bundle, userKey) => {
   const res = await z.request({
     url: `${process.env.MARKETPLACE_URL}/task/`,
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "x-functions-key": "",
+    },
     params: { users: "users", project_id: project_id },
   });
 
@@ -63,6 +66,7 @@ const perform = async (z, bundle) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "x-functions-key": "",
     },
     body: {
       title: bundle.inputData.title,
@@ -98,7 +102,10 @@ const milestoneAndStatusFields = async (z, bundle) => {
   const projectRes = await z.request({
     url: `${process.env.MARKETPLACE_URL}/project/`,
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "x-functions-key": "",
+    },
     params: { project_id: projectId },
   });
   const { template_id, stages = [] } = projectRes.json;
@@ -106,7 +113,10 @@ const milestoneAndStatusFields = async (z, bundle) => {
   const taskOptRes = await z.request({
     url: `${process.env.MARKETPLACE_URL}/task/`,
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "x-functions-key": "",
+    },
     params: { options: "options", template_id },
   });
   // skipThrowForStatus is set globally, so a failed call returns its error body
@@ -173,7 +183,10 @@ const assignUserFields = async (z, bundle) => {
   const res = await z.request({
     url: `${process.env.MARKETPLACE_URL}/task/`,
     method: "GET",
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      "x-functions-key": "",
+    },
     params: { users: "users", project_id: projectId },
   });
 

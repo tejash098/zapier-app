@@ -27,6 +27,7 @@ const perform = async (z, bundle) => {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "x-functions-key": "",
     },
     params: {
       project_id: bundle.inputData.project_id,
