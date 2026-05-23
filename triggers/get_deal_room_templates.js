@@ -1,13 +1,13 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/templates/`,
-    method: 'GET',
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
+    method: "GET",
     headers: {
-      Accept: 'application/json',
+      Accept: "application/json",
     },
     params: {
-      module: 'templates',
-      template_type: 'deal_stages',
+      module: "templates",
+      template_type: "deal_stages",
       sub_template_type: 4,
       items_per_page: 10,
       page: bundle.meta.page + 1,
@@ -35,25 +35,25 @@ const perform = async (z, bundle) => {
 module.exports = {
   operation: {
     perform: perform,
-    type: 'polling',
+    type: "polling",
     sample: {
-      id: '7424309800739016705',
-      org_temp_id: '7424309800739016705',
-      template_name: 'Sales Deal Room',
+      id: "7424309800739016705",
+      org_temp_id: "7424309800739016705",
+      template_name: "Sales Deal Room",
     },
     outputFields: [
-      { key: 'id', label: 'Id' },
-      { key: 'org_temp_id', label: 'Org Temp Id' },
-      { key: 'template_name', label: 'Template Name' },
+      { key: "id", label: "Id" },
+      { key: "org_temp_id", label: "Org Temp Id" },
+      { key: "template_name", label: "Template Name" },
     ],
     canPaginate: true,
   },
   display: {
     description:
-      'Triggers when users select Specific Deal Room Template from Dropdown.',
+      "Triggers when users select Specific Deal Room Template from Dropdown.",
     hidden: true,
-    label: 'Get Deal Room Templates',
+    label: "Get Deal Room Templates",
   },
-  key: 'get_deal_room_templates',
-  noun: 'Template',
+  key: "get_deal_room_templates",
+  noun: "Template",
 };

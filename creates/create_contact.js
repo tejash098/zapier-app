@@ -29,7 +29,7 @@ const perform = async (z, bundle) => {
   const resolvedOwner = ownerData.user_id || bundle.inputData.contact_owner;
 
   const options = {
-    url: `${process.env.NGROK_URL}/contact/`,
+    url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -92,7 +92,7 @@ const perform = async (z, bundle) => {
 
 const inputFields = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/templates/`,
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -338,7 +338,8 @@ module.exports = {
         key: "secondary_emails",
         label: "Secondary Email",
         type: "string",
-        helpText: "Enter one or more additional email addresses for this contact.",
+        helpText:
+          "Enter one or more additional email addresses for this contact.",
         required: false,
         list: true,
         altersDynamicFields: false,
@@ -347,7 +348,8 @@ module.exports = {
         key: "phones",
         label: "Secondary Phones",
         type: "string",
-        helpText: "Enter one or more additional phone numbers for this contact.",
+        helpText:
+          "Enter one or more additional phone numbers for this contact.",
         required: false,
         list: true,
         altersDynamicFields: false,
@@ -538,7 +540,10 @@ module.exports = {
       { key: "phone__primary", label: "Phone Primary" },
       { key: "phones[]number", label: "Phone Number" },
       { key: "phones[]e164Number", label: "Phone E164 Number" },
-      { key: "phones[]internationalNumber", label: "Phone International Number" },
+      {
+        key: "phones[]internationalNumber",
+        label: "Phone International Number",
+      },
       { key: "phones[]nationalNumber", label: "Phone National Number" },
       { key: "phones[]countryCode", label: "Phone Country Code" },
       { key: "phones[]dialCode", label: "Phone Dial Code" },
@@ -587,7 +592,11 @@ module.exports = {
       { key: "external_map", label: "External Map" },
       { key: "responsiveness_score", label: "Responsiveness Score" },
       { key: "engagement_score", label: "Engagement Score" },
-      { key: "last_activity_date", label: "Last Activity Date", type: "datetime" },
+      {
+        key: "last_activity_date",
+        label: "Last Activity Date",
+        type: "datetime",
+      },
       { key: "average_response_time", label: "Average Response Time" },
       { key: "lead_score", label: "Lead Score" },
       { key: "is_draft", label: "Is Draft", type: "boolean" },

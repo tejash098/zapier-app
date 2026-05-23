@@ -4,7 +4,7 @@ const perform = async (z, bundle) => {
 
 const performList = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/company/`,
+    url: `${process.env.MARKETPLACE_URL}/company/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { limit: 20, sort: "-last_update_time" },
@@ -112,7 +112,7 @@ module.exports = {
         Accept: "application/json",
       },
       method: "POST",
-      url: "{{process.env.WEBHOOK_SUBSCRIBE}}",
+      url: "{{process.env.MARKETPLACE_URL}}/webhook/subscribe/",
     },
     performUnsubscribe: {
       body: { subscriptionId: "{{bundle.subscribeData.id}}" },
@@ -121,7 +121,7 @@ module.exports = {
         Accept: "application/json",
       },
       method: "DELETE",
-      url: "{{process.env.WEBHOOK_UNSUBSCRIBE}}",
+      url: "{{process.env.MARKETPLACE_URL}}/webhook/unsubscribe/",
     },
   },
   display: {

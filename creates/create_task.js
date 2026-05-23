@@ -3,7 +3,7 @@ const resolveUser = async (z, bundle, userKey) => {
   const userId = bundle.inputData[userKey];
 
   const res = await z.request({
-    url: `${process.env.NGROK_URL}/task/`,
+    url: `${process.env.MARKETPLACE_URL}/task/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { users: "users", project_id: project_id },
@@ -58,7 +58,7 @@ const perform = async (z, bundle) => {
   }
 
   const options = {
-    url: `${process.env.NGROK_URL}/task/`,
+    url: `${process.env.MARKETPLACE_URL}/task/`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -96,7 +96,7 @@ const milestoneAndStatusFields = async (z, bundle) => {
   if (!projectId) return [];
 
   const projectRes = await z.request({
-    url: `${process.env.NGROK_URL}/project/`,
+    url: `${process.env.MARKETPLACE_URL}/project/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { project_id: projectId },
@@ -104,7 +104,7 @@ const milestoneAndStatusFields = async (z, bundle) => {
   const { template_id, stages = [] } = projectRes.json;
 
   const taskOptRes = await z.request({
-    url: `${process.env.NGROK_URL}/task/`,
+    url: `${process.env.MARKETPLACE_URL}/task/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { options: "options", template_id },
@@ -171,7 +171,7 @@ const assignUserFields = async (z, bundle) => {
   if (!projectId) return staticFields;
 
   const res = await z.request({
-    url: `${process.env.NGROK_URL}/task/`,
+    url: `${process.env.MARKETPLACE_URL}/task/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { users: "users", project_id: projectId },
@@ -356,7 +356,11 @@ module.exports = {
         name: "Week 1",
         color: "#e6ecf5",
         milestone_id: "7442427864802136065",
-        status: { id: 2, status_key: "in_progress", status_name: "In Progress" },
+        status: {
+          id: 2,
+          status_key: "in_progress",
+          status_name: "In Progress",
+        },
         insight: { id: 4, key: "running_late", name: "Running Late" },
         is_project_due: false,
       },
@@ -395,7 +399,11 @@ module.exports = {
       { key: "users[]email", label: "User Email" },
       { key: "users[]role", label: "User Role" },
       { key: "users[]added_date", label: "User Added Date" },
-      { key: "total_elapsed_time", label: "Total Elapsed Time", type: "number" },
+      {
+        key: "total_elapsed_time",
+        label: "Total Elapsed Time",
+        type: "number",
+      },
       { key: "is_timer_running", label: "Is Timer Running", type: "boolean" },
       { key: "time_track_id", label: "Time Track Id" },
       { key: "account_id", label: "Account Id" },

@@ -25,7 +25,7 @@ const resolveOwner = async (z, bundle, ownerKey) => {
 
 const perform = async (z, bundle) => {
   const templateRes = await z.request({
-    url: `${process.env.NGROK_URL}/templates/`,
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: {
@@ -51,7 +51,7 @@ const perform = async (z, bundle) => {
   };
 
   const contactRes = await z.request({
-    url: `${process.env.NGROK_URL}/contact/`,
+    url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: {
@@ -69,7 +69,7 @@ const perform = async (z, bundle) => {
   };
 
   const options = {
-    url: `${process.env.NGROK_URL}/project/`,
+    url: `${process.env.MARKETPLACE_URL}/project/`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -346,7 +346,8 @@ module.exports = {
         key: "region",
         label: "Account: Region",
         type: "string",
-        helpText: "Enter the region of the account (e.g. North America, EMEA, APAC).",
+        helpText:
+          "Enter the region of the account (e.g. North America, EMEA, APAC).",
         required: false,
         list: false,
         altersDynamicFields: false,
@@ -375,7 +376,8 @@ module.exports = {
         key: "selected_milestone",
         label: "Deal: Stage / Milestone",
         type: "string",
-        helpText: "Select the current stage of this deal within the chosen pipeline.",
+        helpText:
+          "Select the current stage of this deal within the chosen pipeline.",
         dynamic: "get_pipeline_stages.id.name",
         required: true,
         list: false,

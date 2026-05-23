@@ -25,7 +25,7 @@ const resolveOwner = async (z, bundle, ownerKey) => {
 
 const perform = async (z, bundle) => {
   const templateRes = await z.request({
-    url: `${process.env.NGROK_URL}/templates/`,
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: {
@@ -51,7 +51,7 @@ const perform = async (z, bundle) => {
   };
 
   const contactRes = await z.request({
-    url: `${process.env.NGROK_URL}/contact/`,
+    url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: {
@@ -69,7 +69,7 @@ const perform = async (z, bundle) => {
   };
 
   const options = {
-    url: `${process.env.NGROK_URL}/project/`,
+    url: `${process.env.MARKETPLACE_URL}/project/`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -276,7 +276,8 @@ module.exports = {
         key: "region",
         label: "Account: Region",
         type: "string",
-        helpText: "Enter the region of the account (e.g. North America, EMEA, APAC).",
+        helpText:
+          "Enter the region of the account (e.g. North America, EMEA, APAC).",
         required: false,
         list: false,
         altersDynamicFields: false,
@@ -331,7 +332,8 @@ module.exports = {
         key: "show_forecasted_date",
         label: "Show Forecasted Date",
         type: "boolean",
-        helpText: "Toggle on to display a forecasted completion date on the project.",
+        helpText:
+          "Toggle on to display a forecasted completion date on the project.",
         required: false,
         list: false,
         altersDynamicFields: false,

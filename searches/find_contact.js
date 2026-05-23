@@ -22,7 +22,7 @@ const perform = async (z, bundle) => {
   ];
 
   const options = {
-    url: `${process.env.NGROK_URL}/contact/`,
+    url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -81,7 +81,7 @@ const inputFields = async (z, bundle) => {
 
   // Dynamic dropdown/API fields
   const options = {
-    url: `${process.env.NGROK_URL}/contact/`,
+    url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "GET",
     headers: {
       Accept: "application/json",

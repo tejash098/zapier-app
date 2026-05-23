@@ -22,7 +22,7 @@ const perform = async (z, bundle) => {
   ];
 
   const options = {
-    url: `${process.env.NGROK_URL}/project/`,
+    url: `${process.env.MARKETPLACE_URL}/project/`,
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const perform = async (z, bundle) => {
     params: {
       project_id: bundle.inputData.project_id,
       filter: JSON.stringify(filter),
-      task_filter: true
+      task_filter: true,
     },
     removeMissingValuesFrom: { body: false, params: false },
   };
@@ -225,7 +225,11 @@ module.exports = {
       { key: "last_update_time", label: "Last Update Time", type: "datetime" },
       { key: "parent_id", label: "Parent Id" },
       { key: "is_timer_running", label: "Is Timer Running", type: "boolean" },
-      { key: "total_elapsed_time", label: "Total Elapsed Time", type: "number" },
+      {
+        key: "total_elapsed_time",
+        label: "Total Elapsed Time",
+        type: "number",
+      },
       { key: "position", label: "Position", type: "number" },
       { key: "is_recurring", label: "Is Recurring", type: "boolean" },
       { key: "parent_recurring_id", label: "Parent Recurring Id" },

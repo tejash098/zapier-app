@@ -113,7 +113,11 @@ module.exports = {
         name: "Week 1",
         color: "#e6ecf5",
         milestone_id: "7442427864802136065",
-        status: { id: 2, status_key: "in_progress", status_name: "In Progress" },
+        status: {
+          id: 2,
+          status_key: "in_progress",
+          status_name: "In Progress",
+        },
         insight: { id: 4, key: "running_late", name: "Running Late" },
         is_project_due: false,
       },
@@ -152,7 +156,11 @@ module.exports = {
       { key: "users[]email", label: "User Email" },
       { key: "users[]role", label: "User Role" },
       { key: "users[]added_date", label: "User Added Date" },
-      { key: "total_elapsed_time", label: "Total Elapsed Time", type: "number" },
+      {
+        key: "total_elapsed_time",
+        label: "Total Elapsed Time",
+        type: "number",
+      },
       { key: "is_timer_running", label: "Is Timer Running", type: "boolean" },
       { key: "time_track_id", label: "Time Track Id" },
       { key: "account_id", label: "Account Id" },
@@ -224,7 +232,7 @@ module.exports = {
         Accept: "application/json",
       },
       method: "POST",
-      url: "{{process.env.WEBHOOK_SUBSCRIBE}}",
+      url: "{{process.env.MARKETPLACE_URL}}/webhook/subscribe/",
     },
     performUnsubscribe: {
       body: { subscriptionId: "{{bundle.subscribeData.id}}" },
@@ -233,7 +241,7 @@ module.exports = {
         Accept: "application/json",
       },
       method: "DELETE",
-      url: "{{process.env.WEBHOOK_UNSUBSCRIBE}}",
+      url: "{{process.env.MARKETPLACE_URL}}/webhook/unsubscribe/",
     },
   },
   display: {

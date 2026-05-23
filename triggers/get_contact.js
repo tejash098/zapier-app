@@ -10,7 +10,7 @@ const perform = async (z, bundle) => {
   }
 
   const options = {
-    url: `${process.env.NGROK_URL}/contact/`,
+    url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "GET",
     headers: {
       Accept: "application/json",

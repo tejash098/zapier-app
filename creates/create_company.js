@@ -67,7 +67,7 @@ const perform = async (z, bundle) => {
   );
 
   const options = {
-    url: `${process.env.NGROK_URL}/company/`,
+    url: `${process.env.MARKETPLACE_URL}/company/`,
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -134,7 +134,7 @@ const perform = async (z, bundle) => {
 
 const inputFields = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/templates/`,
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -225,7 +225,8 @@ const optionsFields = async (z, bundle) => {
       key: "icp_fit",
       label: "ICP Fit",
       type: "string",
-      helpText: "Select how well this company matches your Ideal Customer Profile.",
+      helpText:
+        "Select how well this company matches your Ideal Customer Profile.",
       choices: mapChoices(data.company_icp_fits),
       required: false,
       list: false,
@@ -235,7 +236,8 @@ const optionsFields = async (z, bundle) => {
       key: "company_type",
       label: "Company Type",
       type: "string",
-      helpText: "Select the type of company (e.g. Prospect, Customer, Partner).",
+      helpText:
+        "Select the type of company (e.g. Prospect, Customer, Partner).",
       choices: mapChoices(data.company_types),
       required: false,
       list: false,
@@ -245,7 +247,8 @@ const optionsFields = async (z, bundle) => {
       key: "connection_source",
       label: "Connection Source",
       type: "string",
-      helpText: "Select how this company was first connected with (e.g. Inbound, Outbound, Referral).",
+      helpText:
+        "Select how this company was first connected with (e.g. Inbound, Outbound, Referral).",
       choices: mapChoices(data.company_connection_sources, "value"),
       required: false,
       list: false,

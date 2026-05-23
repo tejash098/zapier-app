@@ -4,7 +4,7 @@ const perform = async (z, bundle) => {
 
 const performList = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/contact/`,
+    url: `${process.env.MARKETPLACE_URL}/contact/`,
     method: "GET",
     headers: { Accept: "application/json" },
     params: { limit: 20, sort: "-creation_time" },
@@ -103,7 +103,10 @@ module.exports = {
       { key: "phone__primary", label: "Phone Primary" },
       { key: "phones[]number", label: "Phone Number" },
       { key: "phones[]e164Number", label: "Phone E164 Number" },
-      { key: "phones[]internationalNumber", label: "Phone International Number" },
+      {
+        key: "phones[]internationalNumber",
+        label: "Phone International Number",
+      },
       { key: "phones[]nationalNumber", label: "Phone National Number" },
       { key: "phones[]countryCode", label: "Phone Country Code" },
       { key: "phones[]dialCode", label: "Phone Dial Code" },
@@ -152,7 +155,11 @@ module.exports = {
       { key: "external_map", label: "External Map" },
       { key: "responsiveness_score", label: "Responsiveness Score" },
       { key: "engagement_score", label: "Engagement Score" },
-      { key: "last_activity_date", label: "Last Activity Date", type: "datetime" },
+      {
+        key: "last_activity_date",
+        label: "Last Activity Date",
+        type: "datetime",
+      },
       { key: "average_response_time", label: "Average Response Time" },
       { key: "lead_score", label: "Lead Score" },
       { key: "is_draft", label: "Is Draft", type: "boolean" },
@@ -176,7 +183,7 @@ module.exports = {
         Accept: "application/json",
       },
       method: "POST",
-      url: "{{process.env.WEBHOOK_SUBSCRIBE}}",
+      url: "{{process.env.MARKETPLACE_URL}}/webhook/subscribe/",
     },
     performUnsubscribe: {
       body: { subscriptionId: "{{bundle.subscribeData.id}}" },
@@ -185,7 +192,7 @@ module.exports = {
         Accept: "application/json",
       },
       method: "DELETE",
-      url: "{{process.env.WEBHOOK_UNSUBSCRIBE}}",
+      url: "{{process.env.MARKETPLACE_URL}}/webhook/unsubscribe/",
     },
   },
   display: {

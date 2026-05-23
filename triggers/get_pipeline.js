@@ -1,13 +1,13 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/templates/`,
-    method: 'GET',
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
+    method: "GET",
     headers: {
-      Accept: 'application/json',
+      Accept: "application/json",
     },
     params: {
-      module: 'templates',
-      template_type: 'pipelines',
+      module: "templates",
+      template_type: "pipelines",
       sub_template_type: 4,
       items_per_page: 10,
       page: bundle.meta.page + 1,
@@ -36,22 +36,22 @@ module.exports = {
     perform: perform,
     canPaginate: true,
     sample: {
-      id: '7424309800764182529',
-      org_temp_id: '7424309800764182529',
-      template_name: 'Salesforce Default',
+      id: "7424309800764182529",
+      org_temp_id: "7424309800764182529",
+      template_name: "Salesforce Default",
     },
     outputFields: [
-      { key: 'id', label: 'Id' },
-      { key: 'org_temp_id', label: 'Org Temp Id' },
-      { key: 'template_name', label: 'Template Name' },
+      { key: "id", label: "Id" },
+      { key: "org_temp_id", label: "Org Temp Id" },
+      { key: "template_name", label: "Template Name" },
     ],
-    type: 'polling',
+    type: "polling",
   },
   display: {
-    description: 'Triggers when users select Specific Pipeline from Dropdown',
+    description: "Triggers when users select Specific Pipeline from Dropdown",
     hidden: true,
-    label: 'Get Deal Pipeline',
+    label: "Get Deal Pipeline",
   },
-  key: 'get_pipeline',
-  noun: 'Pipeline',
+  key: "get_pipeline",
+  noun: "Pipeline",
 };

@@ -15,7 +15,7 @@ const authorizeUrl = async (z, bundle) => {
     .digest("hex");
 
   const url =
-    `${process.env.NGROK_URL}/authorize/` +
+    `${process.env.MARKETPLACE_URL}/authorize/` +
     `?client_id=${clientId}` +
     `&state=${state}` +
     `&redirect_uri=${encodeURIComponent(redirectUri)}` +
@@ -28,7 +28,7 @@ const authorizeUrl = async (z, bundle) => {
 
 const getAccessToken = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/token/`,
+    url: `${process.env.MARKETPLACE_URL}/token/`,
     method: "POST",
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -55,7 +55,7 @@ const getAccessToken = async (z, bundle) => {
 
 const refreshAccessToken = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/auth_refresh/`,
+    url: `${process.env.MARKETPLACE_URL}/auth_refresh/`,
     method: "POST",
     headers: {
       "content-type": "application/x-www-form-urlencoded",
@@ -90,7 +90,7 @@ const refreshAccessToken = async (z, bundle) => {
 
 module.exports = {
   type: "oauth2",
-  test: { url: "{{process.env.NGROK_URL}}/test/" },
+  test: { url: "{{process.env.MARKETPLACE_URL}}/test/" },
   oauth2Config: {
     authorizeUrl: authorizeUrl,
     getAccessToken: getAccessToken,

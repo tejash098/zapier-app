@@ -1,13 +1,13 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/templates/`,
-    method: 'GET',
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
+    method: "GET",
     headers: {
-      Accept: 'application/json',
+      Accept: "application/json",
     },
     params: {
-      module: 'templates',
-      template_type: 'pipelines',
+      module: "templates",
+      template_type: "pipelines",
       sub_template_type: 5,
       items_per_page: 10,
       page: bundle.meta.page + 1,
@@ -36,21 +36,21 @@ module.exports = {
     perform: perform,
     canPaginate: true,
     sample: {
-      id: '7450876547713470465',
-      org_temp_id: '7450876547713470465',
-      template_name: 'Contact Lead Status',
+      id: "7450876547713470465",
+      org_temp_id: "7450876547713470465",
+      template_name: "Contact Lead Status",
     },
     outputFields: [
-      { key: 'id', label: 'Id' },
-      { key: 'org_temp_id', label: 'Org Temp Id' },
-      { key: 'template_name', label: 'Template Name' },
+      { key: "id", label: "Id" },
+      { key: "org_temp_id", label: "Org Temp Id" },
+      { key: "template_name", label: "Template Name" },
     ],
   },
   display: {
-    description: 'Triggers when users select Specific Pipeline from Dropdown.',
+    description: "Triggers when users select Specific Pipeline from Dropdown.",
     hidden: true,
-    label: 'Get Contact Pipeline',
+    label: "Get Contact Pipeline",
   },
-  key: 'get_contact_pipeline',
-  noun: 'Pipeline',
+  key: "get_contact_pipeline",
+  noun: "Pipeline",
 };

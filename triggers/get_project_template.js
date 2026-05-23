@@ -1,13 +1,13 @@
 const perform = async (z, bundle) => {
   const options = {
-    url: `${process.env.NGROK_URL}/templates/`,
-    method: 'GET',
+    url: `${process.env.MARKETPLACE_URL}/templates/`,
+    method: "GET",
     headers: {
-      Accept: 'application/json',
+      Accept: "application/json",
     },
     params: {
-      module: 'templates',
-      template_type: 'project',
+      module: "templates",
+      template_type: "project",
       sub_template_type: bundle.inputData.project_type || null,
       items_per_page: 10,
       page: bundle.meta.page + 1,
@@ -37,13 +37,13 @@ module.exports = {
     perform: perform,
     inputFields: [
       {
-        key: 'project_type',
-        type: 'string',
-        label: 'Project Type',
-        helpText: 'Enter the Project Type.',
+        key: "project_type",
+        type: "string",
+        label: "Project Type",
+        helpText: "Enter the Project Type.",
         choices: {
-          onboarding: 'Onboarding',
-          service_delivery: 'Service Delivery',
+          onboarding: "Onboarding",
+          service_delivery: "Service Delivery",
         },
         required: false,
         list: false,
@@ -52,22 +52,22 @@ module.exports = {
     ],
     canPaginate: true,
     sample: {
-      id: '7424309799656886273',
-      org_temp_id: '7424309799656886273',
-      template_name: 'CRM',
+      id: "7424309799656886273",
+      org_temp_id: "7424309799656886273",
+      template_name: "CRM",
     },
     outputFields: [
-      { key: 'id', label: 'Id' },
-      { key: 'org_temp_id', label: 'Org Temp Id' },
-      { key: 'template_name', label: 'Template Name' },
+      { key: "id", label: "Id" },
+      { key: "org_temp_id", label: "Org Temp Id" },
+      { key: "template_name", label: "Template Name" },
     ],
   },
   display: {
     description:
-      'Triggers when users select Specific Project type from Dropdown',
+      "Triggers when users select Specific Project type from Dropdown",
     hidden: true,
-    label: 'Get Project Template',
+    label: "Get Project Template",
   },
-  key: 'get_project_template',
-  noun: 'Template',
+  key: "get_project_template",
+  noun: "Template",
 };
