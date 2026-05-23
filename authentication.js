@@ -90,7 +90,7 @@ const refreshAccessToken = async (z, bundle) => {
 
 module.exports = {
   type: "oauth2",
-  test: { url: "{{process.env.MARKETPLACE_URL}}/test/" },
+  test: { url: "{{process.env.MARKETPLACE_URL}}/test/", headers: {"x-functions-key": ""} },
   oauth2Config: {
     authorizeUrl: authorizeUrl,
     getAccessToken: getAccessToken,
