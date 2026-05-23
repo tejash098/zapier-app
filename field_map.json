@@ -1,0 +1,149 @@
+{
+  "create_company": {
+    "company_name": "company_name",
+    "domain": "domain",
+    "linkedin_url": "linkedin_url",
+    "twitter_url": "twitter_url",
+    "description": "description",
+    "lead_status": {
+      "status_key": "status_key",
+      "status_name": "status_key"
+    },
+    "lead_status_pipeline_id": "company_pipeline_id",
+    "parent_company": "parent_company",
+    "parent_company_id": "parent_company_id",
+    "operating_regions": "operating_regions",
+    "category": "category",
+    "industry": "industry",
+    "company_owner": "resolvedOwner",
+    "customer_segment": "customer_segment",
+    "icp_fit": "icp_fit",
+    "company_type": "company_type",
+    "connection_source": "connection_source",
+    "vendor_being_replaced": "vendor_being_replaced",
+    "record_source": "integration",
+    "estimated_arr": "mappedArr",
+    "employee_range": "mappedEmp",
+    "hq_location": {
+      "country": "country",
+      "state": "state",
+      "city": "city",
+      "address": "address",
+      "zip_code": "zip_code"
+    },
+    "is_draft": false
+  },
+  "create_contact": {
+    "primary_email": "primary_email",
+    "primary_phone": "primary_phone",
+    "first_name": "first_name",
+    "last_name": "last_name",
+    "full_name": "first_name, last_name",
+    "job_title": "job_title",
+    "linkedin_url": "linkedin_url",
+    "twitter_url": "twitter_url",
+    "whatsapp_number": "whatsapp_number",
+    "secondary_emails": "secondary_emails",
+    "phones": "phones",
+    "phone": {
+      "primary": "primary_phone"
+    },
+    "company_ids": "company_id",
+    "location": {
+      "phones": "phones",
+      "country": "country",
+      "state": "state",
+      "city": "city",
+      "address": "address",
+      "zip_code": "zip_code"
+    },
+    "department": "department",
+    "lead_status": "lead_status",
+    "lead_status_pipeline_id": "lead_status_pipeline_id",
+    "contact_owner": "resolvedOwner",
+    "language": "language",
+    "campaign": "campaign",
+    "internal_notes": "internal_notes",
+    "buying_role": "buying_role",
+    "person_category": "person_category",
+    "communication_channel": "communication_channel",
+    "lead_source": "integration",
+    "is_draft": false
+  },
+  "create_deal": {
+    "project": {
+      "project_name": "project_name",
+      "pipeline_id": "selected_pipeline",
+      "target_milestone_id": "selected_milestone",
+      "start_date": "start_date",
+      "due_date": "due_date",
+      "expected_deal_value": "expected_deal_value",
+      "billing_model": "billing_model",
+      "billing_frequency": "billing_frequency",
+      "deal_resources": "deal_resources",
+      "contract_duration": "contract_duration",
+      "duration_type": "duration_type",
+      "revenue": "revenue",
+      "hourly_rate": "hourly_rate",
+      "monthly_rate": "monthly_rate",
+      "project_type": "sales_deal_room",
+      "project_template": "template",
+      "customer_project_owner": "contactDict",
+      "project_owner": "ownerDict"
+    },
+    "account": {
+      "company_id": "company_id",
+      "account_name": "account_name",
+      "description": "description",
+      "region": "region",
+      "vertical": "vertical",
+      "segment": "segment",
+      "website_url": "website_url",
+      "customer": "contactDict",
+      "account_owner": "ownerDict",
+      "invite_type": "invite_later"
+    },
+    "account_id": ""
+  },
+  "create_project": {
+    "project": {
+      "project_name": "project_name",
+      "start_date": "start_date",
+      "due_date": "due_date",
+      "project_type": "project_type",
+      "project_fee": "project_fee",
+      "show_forecasted_date": "show_forecasted_date",
+      "revenue": "revenue",
+      "is_arr": "is_arr",
+      "project_template": "template",
+      "project_owner": "ownerDict",
+      "customer_project_owner": "contactDict"
+    },
+    "account": {
+      "company_id": "company_id",
+      "account_name": "account_name",
+      "description": "description",
+      "region": "region",
+      "vertical": "vertical",
+      "segment": "segment",
+      "website_url": "website_url",
+      "account_owner": "ownerDict",
+      "customer": "contactDict",
+      "invite_type": "invite_later"
+    },
+    "account_id": ""
+  },
+  "create_task": {
+    "title": "title",
+    "description": "description",
+    "project_id": "project_id",
+    "milestone_id": "milestone_id",
+    "due_date": "due_date",
+    "status": "statusObj",
+    "item_type": 1,
+    "item_type_key": "task",
+    "users": ["userDict"],
+    "checklist_items": "checklist_items",
+    "tags": "tags"
+  }
+}
