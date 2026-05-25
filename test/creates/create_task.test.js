@@ -35,8 +35,9 @@ describe("creates.create_task", () => {
       bundle,
     );
     expect(results).toBeDefined();
-    expect(results.status).toBe("success");
     expect(results.item_id).toBeDefined();
+    expect(results.status.status_key).toBe("not_started");
+    expect(results.title).toContain("Zapier Test Task");
   }, 120000);
 
   it("resolves dynamic input fields without throwing", async () => {
