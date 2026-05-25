@@ -1,3 +1,5 @@
+const { makeContactsRequest } = require("../utils/contact_requests");
+
 const perform = async (z, bundle) => {
   const filter = [
     {
@@ -21,23 +23,20 @@ const perform = async (z, bundle) => {
     },
   ];
 
-  const options = {
-    url: `${process.env.MARKETPLACE_URL}/contact/`,
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "x-functions-key": "",
-    },
-    params: {
+  const options = makeContactsRequest(
+    {
       limit: 20,
       filter: JSON.stringify(filter),
     },
-    removeMissingValuesFrom: {
-      body: false,
-      params: false,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "x-functions-key": "",
+      },
+      removeMissingValuesFrom: { body: false, params: false },
     },
-  };
+  );
 
   return z.request(options).then((response) => {
     const data = response.json;
@@ -81,21 +80,10 @@ const inputFields = async (z, bundle) => {
   }
 
   // Dynamic dropdown/API fields
-  const options = {
-    url: `${process.env.MARKETPLACE_URL}/contact/`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "x-functions-key": "",
-    },
-    params: {
-      options: "options",
-    },
-    removeMissingValuesFrom: {
-      body: true,
-      params: true,
-    },
-  };
+  const options = makeContactsRequest(
+    { options: "options" },
+    { removeMissingValuesFrom: { body: true, params: true } },
+  );
 
   return z.request(options).then((response) => {
     const data = response.json || {};

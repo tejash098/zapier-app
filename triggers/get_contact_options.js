@@ -1,15 +1,7 @@
-const perform = async (z, bundle) => {
-  const options = {
-    url: `${process.env.MARKETPLACE_URL}/contact/`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "x-functions-key": "",
-    },
-    params: { options: "options" },
-  };
+const { makeContactsRequest } = require("../utils/contact_requests");
 
-  const response = await z.request(options);
+const perform = async (z, bundle) => {
+  const response = await z.request(makeContactsRequest({ options: "options" }));
   const data = response.json || {};
   return [{ ...data, id: "contact_options" }];
 };

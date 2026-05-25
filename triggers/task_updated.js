@@ -1,4 +1,4 @@
-const { makeSubscribe, unsubscribe } = require("../utils/webhook_hooks");
+const { makeSubscribe, unsubscribe } = require("../utils/webhook_requests");
 
 const perform = async (z, bundle) => {
   return [bundle.cleanedRequest];

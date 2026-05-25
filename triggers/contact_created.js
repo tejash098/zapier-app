@@ -1,21 +1,14 @@
-const { makeSubscribe, unsubscribe } = require("../utils/webhook_hooks");
+const { makeSubscribe, unsubscribe } = require("../utils/webhook_requests");
+const { makeContactsRequest } = require("../utils/contact_requests");
 
 const perform = async (z, bundle) => {
   return [bundle.cleanedRequest];
 };
 
 const performList = async (z, bundle) => {
-  const options = {
-    url: `${process.env.MARKETPLACE_URL}/contact/`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "x-functions-key": "",
-    },
-    params: { limit: 20, sort: "-creation_time" },
-    removeMissingValuesFrom: { params: true },
-  };
-  const response = await z.request(options);
+  const response = await z.request(
+    makeContactsRequest({ limit: 20, sort: "-creation_time" }),
+  );
   return response.json.results || [];
 };
 

@@ -1,5 +1,6 @@
 const getUsersTrigger = require("../triggers/get_users");
 const { makeTemplatesRequest } = require("../utils/template_requests");
+const { makeContactsRequest } = require("../utils/contact_requests");
 
 const resolveOwner = async (z, bundle, ownerKey) => {
   const { owner_email, owner_name } = bundle.inputData;
@@ -45,17 +46,9 @@ const perform = async (z, bundle) => {
     is_customer: false,
   };
 
-  const contactRes = await z.request({
-    url: `${process.env.MARKETPLACE_URL}/contact/`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "x-functions-key": "",
-    },
-    params: {
-      contact_id: bundle.inputData.contact_id,
-    },
-  });
+  const contactRes = await z.request(
+    makeContactsRequest({ contact_id: bundle.inputData.contact_id }),
+  );
   const contactData = contactRes.json || {};
   const contactDict = {
     contact_id: contactData.contact_id || null,

@@ -221,14 +221,7 @@ zapier-platform invoke search <key>
 | | | `triggers/company_updated.js` | L11 |
 | | | `triggers/get_company_options.js` | L5 |
 | **ZapierCreateCompany** | POST `zapier/company` | `creates/create_company.js` | L73 |
-| **ZapierGetContacts** | GET `zapier/contact` | `triggers/get_contact.js` | L15 |
-| | | `searches/find_contact.js` | L27 |
-| | | `searches/find_contact.js` | L87 |
-| | | `creates/create_deal.js` | L51 |
-| | | `creates/create_project.js` | L51 |
-| | | `triggers/contact_created.js` | L11 |
-| | | `triggers/contact_updated.js` | L11 |
-| | | `triggers/get_contact_options.js` | L5 |
+| **ZapierGetContacts** | GET `zapier/contact` | `utils/contact_requests.js` | L4 |
 | **ZapierCreateContact** | POST `zapier/contact` | `creates/create_contact.js` | L35 |
 | **ZapierGetTemplates** | GET `zapier/templates` | `utils/template_requests.js` | L14 |
 | **ZapierGetProject** | GET `zapier/project` | `triggers/get_projects.js` | L5 |
@@ -240,12 +233,12 @@ zapier-platform invoke search <key>
 | | | `triggers/project_created.js` | L11 |
 | | | `triggers/project_updated.js` | L11 |
 | | | `creates/create_task.js` | L105 |
-| **ZapierCreateProject** | POST `zapier/project` | `creates/create_project.js` | L72 |
-| | | `creates/create_deal.js` | L72 |
+| **ZapierCreateProject** | POST `zapier/project` | `creates/create_project.js` | L65 |
+| | | `creates/create_deal.js` | L65 |
 | **ZapierGetUsers** | GET `zapier/users` | `triggers/get_users.js` | L5 |
 | **ZapierCreateTask** | POST `zapier/task` | `creates/create_task.js` | L66 |
 | **ZapierGetTask** | GET `zapier/task` | `creates/create_task.js` | L8 |
 | | | `creates/create_task.js` | L116 |
 | | | `creates/create_task.js` | L186 |
-| **ZapierWebhookSubscribe** | POST `zapier/webhook/subscribe/` | `utils/webhook_hooks.js` | L7 |
-| **ZapierWebhookUnsubscribe** | DELETE `zapier/webhook/unsubscribe/` | `utils/webhook_hooks.js` | L18 |
+| **ZapierWebhookSubscribe** | POST `zapier/webhook/subscribe/` | `utils/webhook_requests.js` | L7 |
+| **ZapierWebhookUnsubscribe** | DELETE `zapier/webhook/unsubscribe/` | `utils/webhook_requests.js` | L18 |

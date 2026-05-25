@@ -1,3 +1,5 @@
+const { makeContactsRequest } = require("../utils/contact_requests");
+
 const perform = async (z, bundle) => {
   let cursor;
 
@@ -9,24 +11,13 @@ const perform = async (z, bundle) => {
     }
   }
 
-  const options = {
-    url: `${process.env.MARKETPLACE_URL}/contact/`,
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "x-functions-key": "",
-    },
-    params: {
+  const response = await z.request(
+    makeContactsRequest({
       limit: "20",
       sort: "-creation_time",
       next_cursor: cursor,
-    },
-    removeMissingValuesFrom: {
-      params: true,
-    },
-  };
-
-  const response = await z.request(options);
+    }),
+  );
 
   // Store the cursor if it exists for pagination
   if (response.json && response.json.next_cursor) {

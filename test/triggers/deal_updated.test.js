@@ -35,8 +35,19 @@ describe('triggers.deal_updated', () => {
   });
 
   it('should unsubscribe', async () => {
+    const subscribeBundle = {
+      targetUrl: 'https://hooks.zapier.com/hooks/catch/test/abc/',
+      authData: { access_token: process.env.authData_access_token },
+      inputData: {},
+    };
+    const subscribeResult = await appTester(
+      App.triggers['deal_updated'].operation.performSubscribe,
+      subscribeBundle,
+    );
+    expect(subscribeResult.id).toBeDefined();
+
     const bundle = {
-      subscribeData: { id: '7462779712490717185' },
+      subscribeData: { id: subscribeResult.id },
       authData: { access_token: process.env.authData_access_token },
       inputData: {},
     };
